@@ -1,0 +1,165 @@
+import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:untitled/screen/home_screen.dart';
+import 'package:untitled/utils/app_color.dart';
+import 'package:untitled/utils/app_images.dart';
+
+import '../../../../main.dart';
+import '../../utils/app_text.dart';
+import 'login_controller.dart';
+class LoginScreen extends StatelessWidget {
+   LoginScreen({Key? key}) : super(key: key);
+
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  LoginController loginController = Get.put(LoginController());
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Material(
+      child: Obx(() {
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(AppImages.AppLogo,
+                width: MediaQuery.of(context).size.width * 0.5),
+            Padding(
+              padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+              child: Center(
+                  child: Text(AppText.signin.toUpperCase(),
+                      style: TextStyle(
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold,
+                          color: AppColors.appColors))),
+            ),
+            SizedBox(
+              height: Get.height * 0.01,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: Get.width * 0.06,
+                vertical: Get.height * 0.01,
+              ),
+              child: TextField(
+                controller: emailController,
+                autocorrect: true,
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+                onChanged: (v) {
+                  loginController.validatePassword(emailController.text);
+                },
+                decoration: InputDecoration(
+                  errorText: !loginController.emailCheck.value
+                      ? AppText.pleaseEnterCorrectEmail ?? "Enter Text"
+                      : null,
+                  contentPadding: EdgeInsets.only(left: 10),
+                  focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.appColors, width: 1)),
+                  enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.appColors, width: 1)),
+                  disabledBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.appColors, width: 1)),
+                  labelText: AppText.email,
+                  hintText: AppText.email,
+                  alignLabelWithHint: false,
+                  hintStyle: TextStyle(color: Colors.black),
+                  labelStyle: TextStyle(
+                    color: AppColors.appColors,
+                  ),
+                  border: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: AppColors.appColors, width: 1)),
+                ),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: Get.width * 0.06,
+                vertical: Get.height * 0.01,
+              ),
+              child: TextField(
+                controller: passwordController,
+                autocorrect: true,
+                style: TextStyle(
+                  fontSize: 20,
+                ),
+                onChanged: (v) {
+                  loginController.validatePassword(passwordController.text);
+                },
+                obscureText:
+                    loginController.visblePassword.value ? false : true,
+                decoration: InputDecoration(
+                    errorText: !loginController.passwordCheck.value
+                        ? AppText.pleaseEnterCorrectPassword ?? "Enter Text"
+                        : null,
+                    focusColor: AppColors.appColors,
+                    fillColor: AppColors.appColors,
+                    suffixIcon: InkWell(
+                        onTap: () {
+                          loginController.visblePassword.value =
+                              !loginController.visblePassword.value;
+                        },
+                        child: Icon(
+                          loginController.visblePassword.value
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: AppColors.appColors,
+                        )),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppColors.appColors, width: 1)),
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppColors.appColors, width: 1)),
+                    disabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppColors.appColors, width: 1)),
+                    labelText: AppText.password,
+                    hintText: AppText.password,
+                    contentPadding: EdgeInsets.only(left: 10),
+                    alignLabelWithHint: false,
+                    hintStyle: TextStyle(color: Colors.black),
+                    labelStyle: TextStyle(
+                      color: AppColors.appColors,
+                    ),
+                    border: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: AppColors.appColors, width: 1))),
+              ),
+            ),
+            SizedBox(
+              height: Get.height * 0.04,
+            ),
+            TextButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                },
+                style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(AppColors.appColors)),
+                child: Text(
+                  AppText.signin,
+                  style: TextStyle(color: AppColors.white),
+                )),
+            SizedBox(
+              height: Get.height * 0.04,
+            ),
+            SizedBox(height: Get.height * 0.01),
+            SizedBox(
+              height: Get.height * 0.05,
+            ),
+          ],
+        );
+      }),
+    );
+  }
+
+
+}
