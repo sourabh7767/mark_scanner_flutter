@@ -22,7 +22,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
   TextEditingController other = TextEditingController();
   TextEditingController anyOtherInformation = TextEditingController();
   TextEditingController verification = TextEditingController();
-
+ bool? save;
 
   @override
   void initState() {
@@ -87,17 +87,37 @@ class _ServicesRequestState extends State<ServicesRequest> {
             CustomCheckBox(
                 text: AppText.RadarLaserCruiseCalibrationSameModule,
                 value: false),
+            SizedBox(height: 10,),
             Center(
-              child: TextButton(
-                  onPressed: () {},
-                  style: ButtonStyle(
-                      backgroundColor:
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+
+                  TextButton(
+                      onPressed: () {
+                      },
+                      style: ButtonStyle(
+                          backgroundColor:
                           MaterialStateProperty.all(AppColors.appColors),
-                      fixedSize: MaterialStateProperty.all(Size(100, 40))),
-                  child: Text(
-                    "Submit",
-                    style: TextStyle(color: AppColors.white),
-                  )),
+                          fixedSize: MaterialStateProperty.all(Size(100, 40))),
+                      child: Text(
+                        "Save" ,
+                        style: TextStyle(color: AppColors.white),
+                      )),
+                  Center(
+                    child: TextButton(
+                        onPressed: () {
+                        },
+                        style: ButtonStyle(
+                            backgroundColor:
+                            MaterialStateProperty.all(AppColors.appColors),
+                            fixedSize: MaterialStateProperty.all(Size(100, 40))),
+                        child: Text(
+                          "Send" ,
+                          style: TextStyle(color: AppColors.white),
+                        )),
+                  )                    ],
+              ),
             )
             , SizedBox(height: 10,)
           ],

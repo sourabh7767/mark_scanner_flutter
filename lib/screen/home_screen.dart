@@ -91,12 +91,10 @@ class _HomeScreenState extends State<HomeScreen> {
               accountEmail: Text('example@gmail.com'),
               currentAccountPicture: CircleAvatar(
                 child: ClipOval(
-                  child: Image.network(
-                    'https://oflutter.com/wp-content/uploads/2021/02/girl-profile.png',
-                    fit: BoxFit.cover,
-                    width: 90,
-                    height: 90,
-                  ),
+                  child: Icon(
+                    Icons.person,
+                    size: 50,
+                  )
                 ),
               ),
               decoration: BoxDecoration(
