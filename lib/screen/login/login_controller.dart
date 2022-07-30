@@ -15,22 +15,23 @@ class LoginController extends GetxController {
   }
 
   bool? validatePassword(String value) {
-    RegExp regex =
-        RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
-    if (value.isEmpty) {
-      passwordCheck.value = false;
-
-      return false;
-    } else {
-      if (!regex.hasMatch(value)) {
-        passwordCheck.value = false;
-
-        return false;
-      } else {
-        passwordCheck.value = true;
-        return true;
-      }
-    }
+    // RegExp regex =
+    //     RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+    // if (value.isEmpty) {
+    //   passwordCheck.value = false;
+    //
+    //   return false;
+    // } else {
+    //   if (!regex.hasMatch(value)) {
+    //     passwordCheck.value = false;
+    //
+    //     return false;
+    //   } else {
+    //     passwordCheck.value = true;
+    //     return true;
+    //   }
+    // }
+    return true;
   }
 
 

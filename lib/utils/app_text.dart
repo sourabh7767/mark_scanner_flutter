@@ -2,6 +2,7 @@ class AppText {
   AppText._();
 
   static const String allclearadas = "All Clear Adas";
+  static const String scannerApp = "Scanner App";
   static const String signin = "SignIn";
   static const String password = "Password";
 
@@ -12,6 +13,7 @@ class AppText {
   static const String logOut = "Log Out";
   static const String scanner = "Scanner";
   static const String servicesRequest = "Services Request";
+  static const String createServicesRequest = "Create Services Request";
   static const String passwordChange = "Password Change";
   static const String shopName = "Shop Name";
   static const String yourName = "Your Name";

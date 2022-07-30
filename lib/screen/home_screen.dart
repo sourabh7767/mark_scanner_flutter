@@ -3,9 +3,15 @@ import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/screen/password_change.dart';
 import 'package:untitled/screen/scanner.dart';
 import 'package:untitled/screen/services_request.dart';
+import 'package:untitled/splash_screen.dart';
 import 'package:untitled/utils/app_color.dart';
 import 'package:untitled/utils/app_text.dart';
 import 'package:get/get.dart';
+
+import '../api/dio.dart';
+import '../widgets/loader.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -82,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.appColors,
+        title: Text(AppText.scannerApp),
       ),
       drawer: Drawer(
         child: ListView(
@@ -111,6 +118,12 @@ class _HomeScreenState extends State<HomeScreen> {
               },
               leading: Icon(Icons.qr_code_scanner),
               title: Text(AppText.scanner),
+            ), ListTile(
+              onTap: () {
+                Get.to(ServicesRequest());
+              },
+              leading: Icon(Icons.format_align_justify_outlined),
+              title: Text(AppText.createServicesRequest),
             ),
             ListTile(
               onTap: () {
@@ -123,7 +136,18 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             ListTile(
               onTap: () {
-                Get.off(LoginScreen());
+                ProgressDialog.show(context);
+                ApiClient apiClient = ApiClient();
+                apiClient
+                    .logOut().then((value) {
+                      if(value){
+                        Get.offAll(SplashScreen());
+
+                      }else{
+                        Fluttertoast.showToast(msg: "Somethink is Wrong");
+                      }
+                      ProgressDialog.hide();
+                });
               },
               leading: Icon(Icons.exit_to_app),
               title: Text(AppText.logOut),

@@ -2,15 +2,19 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:untitled/api/dio.dart';
 import 'package:untitled/screen/home_screen.dart';
 import 'package:untitled/utils/app_color.dart';
 import 'package:untitled/utils/app_images.dart';
 
 import '../../../../main.dart';
 import '../../utils/app_text.dart';
+import '../../widgets/loader.dart';
 import 'login_controller.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 class LoginScreen extends StatelessWidget {
-   LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
 
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -18,7 +22,6 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Material(
       child: Obx(() {
         return Column(
@@ -139,7 +142,19 @@ class LoginScreen extends StatelessWidget {
             ),
             TextButton(
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>HomeScreen()));
+                  ProgressDialog.show(context);
+                  ApiClient apiClient = ApiClient();
+                  apiClient
+                      .login(emailController.text, passwordController.text)
+                      .then((value) {
+                    if (value) {
+                      Get.off(HomeScreen());
+                    } else {
+                      Fluttertoast.showToast(msg: "SomeThink Is Wrong");
+                    }
+                    ProgressDialog.hide();
+
+                  });
                 },
                 style: ButtonStyle(
                     backgroundColor:
@@ -160,6 +175,4 @@ class LoginScreen extends StatelessWidget {
       }),
     );
   }
-
-
 }
