@@ -31,7 +31,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
     yourName.text="sonu";
     email.text="sonu4567@gdnd.com";
     phoneNO.text="56873460934";
-    VIN.text="nfkj876348jd";
+    VIN.text="DFGJKDFH";
     ro_po.text="fhfuius";
     other.text="ertyuiohgfd";
     anyOtherInformation.text="dfghjw higcbsc";
@@ -43,7 +43,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppText.servicesRequest),
+        title: Text(AppText.servicesPerformed),
         backgroundColor: AppColors.appColors,
       ),
       body: Container(
@@ -54,22 +54,22 @@ class _ServicesRequestState extends State<ServicesRequest> {
             CustomTextField(
                 textEditingController: shopName, hint: AppText.shopName),
             CustomTextField(
-                textEditingController: yourName, hint: AppText.yourName),
+                textEditingController: yourName, hint: AppText.writersName),
             CustomTextField(
                 textEditingController: email, hint: AppText.email),
             CustomTextField(
-                textEditingController: phoneNO, hint: AppText.phoneNO),
-            CustomTextField(textEditingController: VIN, hint: AppText.VIN),
+                textEditingController: phoneNO, hint: AppText.phoneNO,textType: TextInputType.number),
+            CustomTextField(textEditingController: VIN, hint: AppText.VIN,Capital: true,),
             CustomTextField(
                 textEditingController: ro_po, hint: AppText.ro_po),
-            CustomTextField(
-                textEditingController: other, hint: AppText.other),
-            CustomTextField(
-                textEditingController: anyOtherInformation,
-                hint: AppText.anyOtherInformation),
-            CustomTextField(
-                textEditingController: anyOtherInformation,
-                hint: AppText.pleaseEnterAnyTwoDigits),
+            // CustomTextField(
+            //     textEditingController: other, hint: AppText.other),
+            // CustomTextField(
+            //     textEditingController: anyOtherInformation,
+            //     hint: AppText.anyOtherInformation),
+            // CustomTextField(
+            //     textEditingController: anyOtherInformation,
+            //     hint: AppText.pleaseEnterAnyTwoDigits),
             Center(
               child: Text(
                 AppText.servicesRequested,

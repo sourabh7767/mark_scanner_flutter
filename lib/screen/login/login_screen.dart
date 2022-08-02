@@ -13,11 +13,18 @@ import '../../widgets/loader.dart';
 import 'login_controller.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   LoginScreen({Key? key}) : super(key: key);
 
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
+
   TextEditingController passwordController = TextEditingController();
+
   LoginController loginController = Get.put(LoginController());
 
   @override
@@ -142,8 +149,10 @@ class LoginScreen extends StatelessWidget {
             ),
             TextButton(
                 onPressed: () {
+                  setState((){});
                   ProgressDialog.show(context);
                   ApiClient apiClient = ApiClient();
+
                   apiClient
                       .login(emailController.text, passwordController.text)
                       .then((value) {

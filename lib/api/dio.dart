@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:untitled/model/user_model.dart';
 import 'package:untitled/utils/api_path.dart';
 import 'package:untitled/utils/local_storage.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
 import 'dio_client.dart';
 
 class ApiClient {
@@ -39,6 +39,7 @@ return true;
       }
       
     }catch(e){
+      Fluttertoast.showToast(msg: "Error-- "+ e.toString());
       return false;
     }
     return false;

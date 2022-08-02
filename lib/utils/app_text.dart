@@ -12,11 +12,11 @@ class AppText {
   static const String email = "Email";
   static const String logOut = "Log Out";
   static const String scanner = "Scanner";
-  static const String servicesRequest = "Services Request";
-  static const String createServicesRequest = "Create Services Request";
+  static const String servicesPerformed = "Services Performed";
+  static const String createServicesPerformed = "Create Services Performed";
   static const String passwordChange = "Password Change";
   static const String shopName = "Shop Name";
-  static const String yourName = "Your Name";
+  static const String writersName = "Writer's  Name";
   static const String phoneNO = "Phone No";
   static const String VIN = "VIN";
   static const String ro_po = "RO/PO#";
