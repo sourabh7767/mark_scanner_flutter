@@ -4,6 +4,7 @@ class ApiPath{
 
  static String loginPath=BasePath+"login";
  static String logoutPath=BasePath+"logout";
+ static String shopDetailPath=BasePath+"shop_detail";
  static String changePasswordPath=BasePath+"changePassword";
 
 }
