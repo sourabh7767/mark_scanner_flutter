@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:untitled/model/code_data_model.dart';
 import 'package:untitled/model/form_data_model.dart';
 import 'package:untitled/model/user_model.dart';
 import 'package:untitled/utils/api_path.dart';
@@ -91,6 +92,19 @@ class ApiClient {
 
         FormDataModel formDataModel=FormDataModel.fromJson(response.data);
         return formDataModel;
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
+  Future<CodeDataModel?> CodeData(String code) async {
+    try {
+      Response response = await _dio.get(ApiPath.getCodeData(code));
+      if (response.statusCode == 200) {
+
+        CodeDataModel codeDataModel=CodeDataModel.fromJson(response.data);
+        return codeDataModel;
       }
     } catch (e) {
       return null;

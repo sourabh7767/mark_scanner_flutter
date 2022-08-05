@@ -24,7 +24,7 @@ class AppText {
   static const String anyOtherInformation =
       "Any other information we should know.";
   static const String verification = "Verification";
-  static const String servicesRequested = "Services Requested";
+  static const String servicesperformed = "Services Performed";
   static const String pleaseEnterAnyTwoDigits = "Please enter any two digits";
 
   static const String Pre_Scan = "Pre-Scan";

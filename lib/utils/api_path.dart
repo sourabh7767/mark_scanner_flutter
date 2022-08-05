@@ -6,5 +6,6 @@ class ApiPath{
  static String logoutPath=BasePath+"logout";
  static String shopDetailPath=BasePath+"shop_detail";
  static String changePasswordPath=BasePath+"changePassword";
+ static String getCodeData(String code)=>"https://vpic.nhtsa.dot.gov/api/vehicles/decodevinextended/$code?format=json";
 
 }

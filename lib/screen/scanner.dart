@@ -179,7 +179,7 @@ class _ScannerState extends State<Scanner> {
             TextButton(
                 onPressed: () {
                   Get.back();
-                  Get.off(ServicesRequest());
+                  Get.off(ServicesRequest(code: result!.code!,));
                 },
                 child: Text(
                   "Next",

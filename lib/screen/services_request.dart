@@ -6,10 +6,12 @@ import 'package:untitled/widgets/customCheckBox.dart';
 import 'package:untitled/widgets/custom_edit_text.dart';
 import 'package:get/get.dart';
 
+import '../model/code_data_model.dart';
 import '../model/form_data_model.dart';
 class ServicesRequest extends StatefulWidget {
   bool? newForm;
-   ServicesRequest({Key? key, this.newForm}) : super(key: key);
+  String? code;
+   ServicesRequest({Key? key, this.newForm,this.code}) : super(key: key);
 
   @override
   State<ServicesRequest> createState() => _ServicesRequestState();
@@ -20,7 +22,12 @@ class _ServicesRequestState extends State<ServicesRequest> {
   TextEditingController yourName = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController phoneNO = TextEditingController();
+  TextEditingController modelYear = TextEditingController();
+  TextEditingController model = TextEditingController();
+  TextEditingController color = TextEditingController();
+  TextEditingController Make = TextEditingController();
   TextEditingController VIN = TextEditingController();
+  TextEditingController licNo = TextEditingController();
   TextEditingController ro_po = TextEditingController();
   TextEditingController other = TextEditingController();
   TextEditingController anyOtherInformation = TextEditingController();
@@ -28,10 +35,36 @@ class _ServicesRequestState extends State<ServicesRequest> {
  bool? save;
  ServiceRequestController serviceRequestController=Get.put(ServiceRequestController());
 
+ Results? getdata(variable){
+  for(Results data in serviceRequestController.codeData.value.results!){
+
+    if(data.variable==variable){
+      print("Match===");
+      return data;
+    }
+
+  }
+  return null;
+
+
+ }
+
+
+
   @override
   void initState() {
+WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+if((widget.code ?? "")!="") {
+  await serviceRequestController.LoadFormData(widget.code);
+  Make.text = getdata("Make")!.value ?? "";
+  modelYear.text = getdata("Model Year")!.value ?? "";
+  model.text = getdata("Model")!.value ?? "";
+  VIN.text = serviceRequestController.codeData.value.searchCriteria!;
+} await serviceRequestController.LoadData();
+ email.text=serviceRequestController.shopDetails.value.email!;
 
-serviceRequestController.LoadData();
+});
+
     if((widget.newForm ?? false)){
     shopName.text="My Shop,in";
     yourName.text="sonu";
@@ -42,7 +75,8 @@ serviceRequestController.LoadData();
     other.text="ertyuiohgfd";
     anyOtherInformation.text="dfghjw higcbsc";
     verification.text="456788";   }
-    setState((){});
+
+setState((){});
   }
 
   @override
@@ -65,6 +99,7 @@ serviceRequestController.LoadData();
                                 shrinkWrap: true,
               physics: AlwaysScrollableScrollPhysics(),
               children: <Widget>[
+                SizedBox(height: 40,),
                 Center(
                   child: Container(
                     decoration: BoxDecoration(
@@ -74,14 +109,17 @@ serviceRequestController.LoadData();
                         width: 1
                       )
                     ),
-                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 1),
+                    margin: EdgeInsets.symmetric(horizontal: 25,vertical: 1),
+                    padding: EdgeInsets.symmetric(horizontal: 13),
                     child: DropdownButton(
                       items:  serviceRequestController.formDataModel.value.data!.shopDetails?.map<
                           DropdownMenuItem<ShopDetails>>((e) {
                         return DropdownMenuItem(
                             value: e,
-                            child: SizedBox(
-                                width: Get.width * 0.75,
+                            child: Container(
+                                width: Get.width * 0.7,
+                                height: 20,
+                                margin: EdgeInsets.symmetric(horizontal: 5),
                                 child: Text(e.name!)));
                       }).toList()
                           ,
@@ -99,12 +137,21 @@ serviceRequestController.LoadData();
                   ),
                 ),
                 CustomTextField(
-                    textEditingController: yourName, hint: AppText.writersName),
+              textEditingController: yourName, hint: AppText.writersName),
                 CustomTextField(
                     textEditingController: email, hint: AppText.email),
                 CustomTextField(
                     textEditingController: phoneNO, hint: AppText.phoneNO,textType: TextInputType.number),
                 CustomTextField(textEditingController: VIN, hint: AppText.VIN,Capital: true,),
+                CustomTextField(
+                    textEditingController: model, hint: "Model"), CustomTextField(
+                    textEditingController: modelYear, hint: "Model Year"),
+                CustomTextField(
+                    textEditingController: Make, hint: "Make"),
+                CustomTextField(
+                    textEditingController: color, hint: "Color"),
+                CustomTextField(
+                    textEditingController: licNo, hint: "Lic No"),
                 CustomTextField(
                     textEditingController: ro_po, hint: AppText.ro_po),
                 // CustomTextField(
@@ -117,7 +164,7 @@ serviceRequestController.LoadData();
                 //     hint: AppText.pleaseEnterAnyTwoDigits),
                 Center(
                   child: Text(
-                    AppText.servicesRequested,
+                    AppText.servicesperformed,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
