@@ -29,8 +29,8 @@ class _ServicesRequestState extends State<ServicesRequest> {
   TextEditingController VIN = TextEditingController();
   TextEditingController licNo = TextEditingController();
   TextEditingController ro_po = TextEditingController();
-  TextEditingController other = TextEditingController();
-  TextEditingController anyOtherInformation = TextEditingController();
+  TextEditingController Engine = TextEditingController();
+  TextEditingController Mileage = TextEditingController();
   TextEditingController verification = TextEditingController();
  bool? save;
  ServiceRequestController serviceRequestController=Get.put(ServiceRequestController());
@@ -72,8 +72,7 @@ if((widget.code ?? "")!="") {
     phoneNO.text="56873460934";
     VIN.text="DFGJKDFH";
     ro_po.text="fhfuius";
-    other.text="ertyuiohgfd";
-    anyOtherInformation.text="dfghjw higcbsc";
+
     verification.text="456788";   }
 
 setState((){});
@@ -102,6 +101,7 @@ setState((){});
                 SizedBox(height: 40,),
                 Center(
                   child: Container(
+                    width: double.infinity,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(5),
                       border: Border.all(
@@ -109,8 +109,8 @@ setState((){});
                         width: 1
                       )
                     ),
-                    margin: EdgeInsets.symmetric(horizontal: 25,vertical: 1),
-                    padding: EdgeInsets.symmetric(horizontal: 13),
+                    margin: EdgeInsets.symmetric(horizontal: 30,vertical: 1),
+                    padding: EdgeInsets.symmetric(horizontal: 5),
                     child: DropdownButton(
                       items:  serviceRequestController.formDataModel.value.data!.shopDetails?.map<
                           DropdownMenuItem<ShopDetails>>((e) {
@@ -151,7 +151,9 @@ setState((){});
                 CustomTextField(
                     textEditingController: color, hint: "Color"),
                 CustomTextField(
-                    textEditingController: licNo, hint: "Lic No"),
+                    textEditingController: licNo, hint: "Lic No"),CustomTextField(
+                    textEditingController: Engine, hint: "Engine"),CustomTextField(
+                    textEditingController: Mileage, hint: "Mileage"),
                 CustomTextField(
                     textEditingController: ro_po, hint: AppText.ro_po),
                 // CustomTextField(
