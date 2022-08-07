@@ -7,10 +7,15 @@ Rx<FormDataModel> formDataModel=FormDataModel().obs;
 var check=false.obs;
 Rx<ShopDetails> shopDetails=ShopDetails().obs;
 Rx<CodeDataModel> codeData=CodeDataModel().obs;
+var servicesperformed=[].obs;
   LoadData()  async {
     ApiClient apiClient=ApiClient();
+var data=ShopDetails(iso: "",updatedAt: "",number: "", id: 0,dialCode: "",createdAt: "",name: "Select Shop Name",email: "");
+    shopDetails.value=ShopDetails.fromJson(data.toJson());
     formDataModel.value=await  apiClient.shopDetail() ?? FormDataModel();
+   formDataModel.value.data!.shopDetails!.insert(0, data);
     shopDetails.value=formDataModel.value.data!.shopDetails![0];
+
     check.value=true;
   }
 

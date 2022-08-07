@@ -62,13 +62,31 @@ class ShopDetails {
   int? id;
   String? name;
   String? email;
+  String? dialCode;
+  String? iso;
+  String? number;
+  String? createdAt;
+  String? updatedAt;
 
-  ShopDetails({this.id, this.name, this.email});
+  ShopDetails(
+      {this.id,
+        this.name,
+        this.email,
+        this.dialCode,
+        this.iso,
+        this.number,
+        this.createdAt,
+        this.updatedAt});
 
   ShopDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
+    dialCode = json['dial_code'];
+    iso = json['iso'];
+    number = json['number'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,6 +94,11 @@ class ShopDetails {
     data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
+    data['dial_code'] = this.dialCode;
+    data['iso'] = this.iso;
+    data['number'] = this.number;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
@@ -83,18 +106,24 @@ class ShopDetails {
 class Services {
   int? id;
   String? name;
+  String? createdAt;
+  String? updatedAt;
 
-  Services({this.id, this.name});
+  Services({this.id, this.name, this.createdAt, this.updatedAt});
 
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['name'] = this.name;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }

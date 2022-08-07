@@ -3,6 +3,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:untitled/model/code_data_model.dart';
 import 'package:untitled/model/form_data_model.dart';
+import 'package:untitled/model/invoice_list_model.dart';
+import 'package:untitled/model/service_form_model.dart';
+import 'package:untitled/model/service_form_result_model.dart';
 import 'package:untitled/model/user_model.dart';
 import 'package:untitled/utils/api_path.dart';
 import 'package:untitled/utils/local_storage.dart';
@@ -98,6 +101,55 @@ class ApiClient {
     }
     return null;
   }
+  Future<InvoiceListModel?> invoiceList() async {
+    try {
+      String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
+      Response response = await _dio.get(ApiPath.invoiceListPath,
+          options: Options(headers: {"Authorization": "Bearer " + auth}));
+      if (response.statusCode == 200) {
+
+        InvoiceListModel invoiceListModel=InvoiceListModel.fromJson(response.data);
+        return invoiceListModel;
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
+  Future<ServiceFormResultModel?> saveForm(ServiceFormModel data) async {
+    try {
+      String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
+      Response response = await _dio.post(ApiPath.saveInvoicePath,
+          data: FormData.fromMap(data.toJson()),
+          options: Options(headers: {"Authorization": "Bearer " + auth}));
+      if (response.statusCode == 200) {
+
+        ServiceFormResultModel serviceFormResultModel=ServiceFormResultModel.fromJson(response.data);
+        return serviceFormResultModel;
+      }
+    } catch (e) {
+      return null;
+    }
+    return null;
+  }
+  Future<ServiceFormResultModel?> invoice(String id) async {
+    try {
+      String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
+      Response response = await _dio.get(ApiPath.invoiceListPath+"/"+id,
+          options: Options(headers: {"Authorization": "Bearer " + auth}));
+      if (response.statusCode == 200) {
+
+        ServiceFormResultModel invoiceModel=ServiceFormResultModel.fromJson(response.data);
+        return invoiceModel;
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "Failed ${e.toString()}");
+      return null;
+    }
+    Fluttertoast.showToast(msg: "Failed");
+    return null;
+  }
+
   Future<CodeDataModel?> CodeData(String code) async {
     try {
       Response response = await _dio.get(ApiPath.getCodeData(code));
