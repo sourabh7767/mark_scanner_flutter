@@ -44,6 +44,7 @@ class Invoice {
   String? cPhone;
   String? cFax;
   String? vYear;
+  String? Ro_num;
   String? vMake;
   String? vLicno;
   String? vVin;
@@ -54,6 +55,7 @@ class Invoice {
   String? services;
   int? status;
   String? createdAt;
+  String? v_modal;
   String? updatedAt;
 
   Invoice(
@@ -64,6 +66,7 @@ class Invoice {
         this.shopName,
         this.shopEmail,
         this.shopNumber,
+        this.v_modal,
         this.cName,
         this.cEmail,
         this.cAddress,
@@ -73,6 +76,7 @@ class Invoice {
         this.vMake,
         this.vLicno,
         this.vVin,
+        this.Ro_num,
         this.vColor,
         this.vEngine,
         this.vMilege,
@@ -93,12 +97,14 @@ class Invoice {
     cName = json['c_name'];
     cEmail = json['c_email'];
     cAddress = json['c_address'];
-    cPhone = json['c_phone'];
+    v_modal = json['c_address'];
+    cPhone = json['v_modal'];
     cFax = json['c_fax'];
     vYear = json['v_year'];
     vMake = json['v_make'];
     vLicno = json['v_licno'];
     vVin = json['v_vin'];
+    Ro_num = json['Ro_num'];
     vColor = json['v_color'];
     vEngine = json['v_engine'];
     vMilege = json['v_milege'];
@@ -123,6 +129,8 @@ class Invoice {
     data['c_address'] = this.cAddress;
     data['c_phone'] = this.cPhone;
     data['c_fax'] = this.cFax;
+    data['Ro_num'] = this.Ro_num;
+    data['v_modal'] = this.v_modal;
     data['v_year'] = this.vYear;
     data['v_make'] = this.vMake;
     data['v_licno'] = this.vLicno;

@@ -8,6 +8,7 @@ var check=false.obs;
 Rx<ShopDetails> shopDetails=ShopDetails().obs;
 Rx<CodeDataModel> codeData=CodeDataModel().obs;
 var servicesperformed=[].obs;
+var servicesperformedString="".obs;
   LoadData()  async {
     ApiClient apiClient=ApiClient();
 var data=ShopDetails(iso: "",updatedAt: "",number: "", id: 0,dialCode: "",createdAt: "",name: "Select Shop Name",email: "");

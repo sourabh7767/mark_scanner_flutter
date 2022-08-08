@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:untitled/api/dio.dart';
 import 'package:untitled/model/service_form_model.dart';
+import 'package:untitled/screen/home_screen.dart';
 import 'package:untitled/screen/service_request_controller.dart';
 import 'package:untitled/utils/app_color.dart';
 import 'package:untitled/utils/app_text.dart';
@@ -54,7 +55,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
     }
     return null;
   }
-
+  ServiceFormResultModel? invoice;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
@@ -66,31 +67,39 @@ class _ServicesRequestState extends State<ServicesRequest> {
         VIN.text = serviceRequestController.codeData.value.searchCriteria!;
       }
       await serviceRequestController.LoadData();
-      if ((widget.id ?? "")!="") {
-     ApiClient apiClient=ApiClient();
-     ServiceFormResultModel? invoice= await apiClient.invoice(widget.id!);
-       serviceRequestController.formDataModel.value.data!.shopDetails!.forEach((element) {
-         print("data ---------"+element.id.toString()+widget.id.toString());
-         if(element.id.toString()==widget.id.toString()){
-         serviceRequestController.shopDetails.value=element;
-       }});
-       print("Data="+invoice!.data!.toJson().toString());
+      if ((widget.id ?? "") != "") {
+        ApiClient apiClient = ApiClient();
+         invoice = await apiClient.invoice(widget.id!);
+        serviceRequestController.formDataModel.value.data!.shopDetails!
+            .forEach((element) {
+          print("data ---------" +
+              element.id.toString() +
+              "/" +
+              invoice!.data!.shopId.toString());
+          if (element.id.toString() == invoice!.data!.shopId.toString()) {
+            serviceRequestController.shopDetails.value = element;
+            email.text = serviceRequestController.shopDetails.value.email!;
+            phoneNO.text = serviceRequestController.shopDetails.value.number!;
+
+          }
+
+        });
+
+        print("Data=" + invoice!.data!.toJson().toString());
         yourName.text = invoice!.data!.cName ?? "";
-     modelYear.text=invoice.data!.vYear!;
-     // model.text=invoice!.data!.;
-     color.text=invoice!.data!.vColor!;
-     address.text=invoice!.data!.cAddress!;
-     Make.text=invoice!.data!.vMake!;
-     VIN.text=invoice!.data!.vVin!;
-     licNo.text=invoice!.data!.vLicno!;
-     // ro_po.text=invoice!.data!.v!;
-     Engine.text=invoice!.data!.vEngine!;
-     Mileage.text=invoice!.data!.vMilege!;
-setState((){});
+        modelYear.text = invoice!.data!.vYear ?? "";
+        model.text = invoice!.data!.v_modal ?? "";
+        color.text = invoice!.data!.vColor ?? "";
+        address.text = invoice!.data!.cAddress ?? "";
+        Make.text = invoice!.data!.vMake ?? "";
+        VIN.text = invoice!.data!.vVin ?? "";
+        licNo.text = invoice!.data!.vLicno ?? "";
+        ro_po.text = invoice!.data!.Ro_num ?? "";
+        Engine.text = invoice!.data!.vEngine ?? "";
+        Mileage.text = invoice!.data!.vMilege ?? "";
+        setState(() {});
       }
     });
-
-
 
     setState(() {});
   }
@@ -137,7 +146,6 @@ setState((){});
                               child: Text(e.name!)));
                     }).toList(),
                     value: serviceRequestController.shopDetails.value.obs(),
-
                     borderRadius: BorderRadius.circular(10),
                     onChanged: (ShopDetails? v1) {
                       print("Change" + v1!.toJson().toString());
@@ -147,8 +155,10 @@ setState((){});
                           serviceRequestController.shopDetails.value
                               .toJson()
                               .toString());
-                      email.text = serviceRequestController.shopDetails.value.email!;
-                      phoneNO.text = serviceRequestController.shopDetails.value.number!;
+                      email.text =
+                          serviceRequestController.shopDetails.value.email!;
+                      phoneNO.text =
+                          serviceRequestController.shopDetails.value.number!;
                     },
                   ),
                 ),
@@ -160,10 +170,11 @@ setState((){});
               CustomTextField(
                   textEditingController: phoneNO,
                   hint: AppText.phoneNO,
-                  textType: TextInputType.number),    CustomTextField(
-                  textEditingController: address,
-                  hint: "Address",
-                  ),
+                  textType: TextInputType.number),
+              CustomTextField(
+                textEditingController: address,
+                hint: "Address",
+              ),
               CustomTextField(
                 textEditingController: VIN,
                 hint: AppText.VIN,
@@ -200,8 +211,10 @@ setState((){});
                   itemBuilder: (context, index) {
                     return CustomCheckBox(
                         data: serviceRequestController
-                            .formDataModel.value.data!.services![0],
-                        value: false);
+                            .formDataModel.value.data!.services![index],
+                        value:check(index),
+
+                    );
                   }),
 
               SizedBox(
@@ -226,7 +239,9 @@ setState((){});
                         )),
                     Center(
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            send("2");
+                          },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
                                   AppColors.appColors),
@@ -249,51 +264,76 @@ setState((){});
       );
     });
   }
-  send(status)
-  {
-    ProgressDialog.show(context);
+bool? check(index){
+    if((invoice?? "")!="") {
+      String listItem = invoice!.data!.services!;
+      bool? value;
+      listItem.split(',').forEach((element) {
+        if (element.toString() == serviceRequestController
+            .formDataModel.value.data!.services![index].id.toString()) {
+          value = true;
+        }
+      });
+      return value ?? false;
+    }
+    return false;
+}
+  send(status) {
 
-    if(serviceRequestController.shopDetails.value.id==""){Fluttertoast.showToast( msg: "Select shopName");}else
-    if(email.text==""){Fluttertoast.showToast(msg: "Enter email ");}else
-    if(phoneNO.text==""){Fluttertoast.showToast(msg: "Enter phoneNO ");}else
-    if(modelYear.text==""){Fluttertoast.showToast(msg: "Enter modelYear ");}else
-    if(model.text==""){Fluttertoast.showToast(msg: "Enter model ");}else
-    if(color.text==""){Fluttertoast.showToast(msg: "Enter color ");}else
-    if(Make.text==""){Fluttertoast.showToast(msg: "Enter Make ");}else
-    if(VIN.text==""){Fluttertoast.showToast(msg: "Enter VIN ");}else
-    if(licNo.text==""){Fluttertoast.showToast(msg: "Enter licNo ");}else
-    if(ro_po.text==""){Fluttertoast.showToast(msg: "Enter ro_po ");}else
-    if(Engine.text==""){Fluttertoast.showToast(msg: "Enter Engine ");}else
-    if(Mileage.text==""){Fluttertoast.showToast(msg: "Enter Mileage");}else
-    if(yourName.text==""){Fluttertoast.showToast(msg: "Enter yourName");}else{
-      ServiceFormModel serviceFormModel=ServiceFormModel(
-        cName: yourName.text,
-        cAddress: address.text,
-        cEmail: email.text,
-        cPhone: phoneNO.text,
-        services:"1",
-        shopId: serviceRequestController.shopDetails.value.id.toString(),
-        status: status,
-        vColor: color.text,
-        vEngine: Engine.text,
-        vLicno: licNo.text,
-        vMake: Make.text,
-        vMilege: Mileage.text,
-        vVin: VIN.text,
-        vYear: modelYear.text
-      );
-      ApiClient apiClient=ApiClient();
+    if (serviceRequestController.shopDetails.value.id == "") {
+      Fluttertoast.showToast(msg: "Select shopName");
+    } else if (email.text == "") {
+      Fluttertoast.showToast(msg: "Enter email ");
+    } else if (phoneNO.text == "") {
+      Fluttertoast.showToast(msg: "Enter phoneNO ");
+    } else if (modelYear.text == "") {
+      Fluttertoast.showToast(msg: "Enter modelYear ");
+    } else if (model.text == "") {
+      Fluttertoast.showToast(msg: "Enter model ");
+    } else if (color.text == "") {
+      Fluttertoast.showToast(msg: "Enter color ");
+    } else if (Make.text == "") {
+      Fluttertoast.showToast(msg: "Enter Make ");
+    } else if (VIN.text == "") {
+      Fluttertoast.showToast(msg: "Enter VIN ");
+    } else if (licNo.text == "") {
+      Fluttertoast.showToast(msg: "Enter licNo ");
+    } else if (ro_po.text == "") {
+      Fluttertoast.showToast(msg: "Enter ro_po ");
+    } else if (Engine.text == "") {
+      Fluttertoast.showToast(msg: "Enter Engine ");
+    } else if (Mileage.text == "") {
+      Fluttertoast.showToast(msg: "Enter Mileage");
+    } else if (yourName.text == "") {
+      Fluttertoast.showToast(msg: "Enter yourName");
+    } else {    ProgressDialog.show(context);
+
+    ServiceFormModel serviceFormModel = ServiceFormModel(
+      id: widget.id ?? "",
+          cName: yourName.text,
+          cAddress: address.text,
+          cEmail: email.text,
+          cPhone: phoneNO.text,
+          services: serviceRequestController.servicesperformedString.value,
+          Ro_num: ro_po.text,
+          v_modal: model.text,
+          shopId: serviceRequestController.shopDetails.value.id.toString(),
+          status: status,
+          vColor: color.text,
+          vEngine: Engine.text,
+          vLicno: licNo.text,
+          vMake: Make.text,
+          vMilege: Mileage.text,
+          vVin: VIN.text,
+
+          vYear: modelYear.text);
+      ApiClient apiClient = ApiClient();
       apiClient.saveForm(serviceFormModel).then((value) {
-
-       ProgressDialog.hide();
-      Fluttertoast.showToast(msg: value!.statusCode.toString());
+        ProgressDialog.hide();
+        Get.off(HomeScreen());
+        Fluttertoast.showToast(msg: value!.statusCode.toString());
       });
       Fluttertoast.showToast(msg: "Success");
     }
-
   }
 }
-
-
-
-

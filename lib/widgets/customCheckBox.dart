@@ -16,6 +16,15 @@ class CustomCheckBox extends StatefulWidget {
 
 class _CustomCheckBoxState extends State<CustomCheckBox> {
   ServiceRequestController serviceRequestController=Get.put(ServiceRequestController());
+
+  @override
+  void initState() {
+if(widget.value==true){
+  serviceRequestController.servicesperformed.value.add(widget.data!.id);
+
+}
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -47,8 +56,10 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
              for(int data in serviceRequestController.servicesperformed.value){
               if(listData==""){
                 listData=data.toString();
+                serviceRequestController.servicesperformedString.value=listData;
               }else{ listData=listData+","+data.toString();
-             }}
+              serviceRequestController.servicesperformedString.value=listData;
+              }}
              print("servicesperformed = "+listData);
               setState((){});
             }),

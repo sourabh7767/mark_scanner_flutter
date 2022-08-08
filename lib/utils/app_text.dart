@@ -13,6 +13,7 @@ class AppText {
   static const String logOut = "Log Out";
   static const String scanner = "Scanner";
   static const String servicesPerformed = "Services Performed";
+  static const String servicesPerformedDetails = "Services Performed Details";
   static const String createServicesPerformed = "Create Services Performed";
   static const String passwordChange = "Password Change";
   static const String shopName = "Shop Name";

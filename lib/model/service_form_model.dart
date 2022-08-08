@@ -7,7 +7,9 @@ class ServiceFormModel {
   String? vMake;
   String? vLicno;
   String? vColor;
+  String? v_modal;
   String? vEngine;
+  String? Ro_num;
   String? vMilege;
   String? vVin;
   String? status;
@@ -23,7 +25,9 @@ class ServiceFormModel {
         this.vYear,
         this.vMake,
         this.vLicno,
+        this.v_modal,
         this.vColor,
+        this.Ro_num,
         this.vEngine,
         this.vMilege,
         this.vVin,
@@ -41,6 +45,8 @@ class ServiceFormModel {
     vMake = json['v_make'];
     vLicno = json['v_licno'];
     vColor = json['v_color'];
+    v_modal = json['v_modal'];
+    Ro_num = json['Ro_num'];
     vEngine = json['v_engine'];
     vMilege = json['v_milege'];
     vVin = json['v_vin'];
@@ -60,6 +66,8 @@ class ServiceFormModel {
     data['v_make'] = this.vMake;
     data['v_licno'] = this.vLicno;
     data['v_color'] = this.vColor;
+    data['v_modal'] = this.v_modal;
+    data['Ro_num'] = this.Ro_num;
     data['v_engine'] = this.vEngine;
     data['v_milege'] = this.vMilege;
     data['v_vin'] = this.vVin;

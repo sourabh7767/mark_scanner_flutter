@@ -43,6 +43,8 @@ class Data {
   String? vMake;
   String? vLicno;
   String? vVin;
+  String? v_modal;
+  String? Ro_num;
   String? vColor;
   String? vEngine;
   String? vMilege;
@@ -63,6 +65,7 @@ class Data {
         this.cName,
         this.cEmail,
         this.cAddress,
+        this.v_modal,
         this.cPhone,
         this.cFax,
         this.vYear,
@@ -70,6 +73,7 @@ class Data {
         this.vLicno,
         this.vVin,
         this.vColor,
+        this.Ro_num,
         this.vEngine,
         this.vMilege,
         this.isEmailSent,
@@ -85,6 +89,7 @@ class Data {
     shopId = json['shop_id'];
     shopName = json['shop_name'];
     shopEmail = json['shop_email'];
+    v_modal = json['v_modal'];
     shopNumber = json['shop_number'];
     cName = json['c_name'];
     cEmail = json['c_email'];
@@ -95,6 +100,7 @@ class Data {
     vMake = json['v_make'];
     vLicno = json['v_licno'];
     vVin = json['v_vin'];
+    Ro_num = json['Ro_num'];
     vColor = json['v_color'];
     vEngine = json['v_engine'];
     vMilege = json['v_milege'];
@@ -116,6 +122,8 @@ class Data {
     data['shop_number'] = this.shopNumber;
     data['c_name'] = this.cName;
     data['c_email'] = this.cEmail;
+    data['v_modal'] = this.v_modal;
+    data['Ro_num'] = this.Ro_num;
     data['c_address'] = this.cAddress;
     data['c_phone'] = this.cPhone;
     data['c_fax'] = this.cFax;

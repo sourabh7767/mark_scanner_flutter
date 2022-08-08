@@ -120,7 +120,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   return InkWell(
                     onTap: (){
-                      Get.to(ServiceDetailScreen());
+                      Get.to(ServiceDetailScreen(id:data.data!.data![index].id.toString()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
