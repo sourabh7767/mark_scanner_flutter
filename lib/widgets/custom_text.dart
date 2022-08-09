@@ -9,7 +9,8 @@ class CustomText extends StatelessWidget {
     return Container(
       margin: EdgeInsets.all(8),
 
-      child: Row(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
 // width: 100,
@@ -19,7 +20,9 @@ class CustomText extends StatelessWidget {
               fontSize: 16
             ),
             ),
-          ), Text((text ?? ""),
+          ),
+          SizedBox(height: 5,),
+          Text((text ?? ""),
           style: TextStyle(
              fontWeight: FontWeight.w400,
             fontSize: 16

@@ -119,15 +119,18 @@ class ApiClient {
   Future<ServiceFormResultModel?> saveForm(ServiceFormModel data) async {
     try {
       String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
+      print("Data --- "+data.toJson().toString());
       Response response = await _dio.post(ApiPath.saveInvoicePath,
           data: FormData.fromMap(data.toJson()),
           options: Options(headers: {"Authorization": "Bearer " + auth}));
+      print("res"+response.toString());
       if (response.statusCode == 200) {
 
         ServiceFormResultModel serviceFormResultModel=ServiceFormResultModel.fromJson(response.data);
         return serviceFormResultModel;
       }
     } catch (e) {
+      print("response--"+e.toString());
       return null;
     }
     return null;

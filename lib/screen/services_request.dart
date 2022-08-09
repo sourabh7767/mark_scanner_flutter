@@ -13,6 +13,7 @@ import 'package:untitled/widgets/loader.dart';
 import '../model/code_data_model.dart';
 import '../model/form_data_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 import '../model/invoice_list_model.dart';
 import '../model/service_form_result_model.dart';
@@ -42,7 +43,10 @@ class _ServicesRequestState extends State<ServicesRequest> {
   TextEditingController Engine = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController Mileage = TextEditingController();
+  TextEditingController amount = TextEditingController();
   bool? save;
+  List<String> years=[];
+  String? selectYear;
   ServiceRequestController serviceRequestController =
       Get.put(ServiceRequestController());
 
@@ -59,12 +63,14 @@ class _ServicesRequestState extends State<ServicesRequest> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+
       if ((widget.code ?? "") != "") {
         await serviceRequestController.LoadFormData(widget.code);
         Make.text = getdata("Make")!.value ?? "";
         modelYear.text = getdata("Model Year")!.value ?? "";
         model.text = getdata("Model")!.value ?? "";
-        VIN.text = serviceRequestController.codeData.value.searchCriteria!;
+        Engine.text = getdata("Engine Number of Cylinders")!.value ?? "";
+        VIN.text = widget.code ?? "";
       }
       await serviceRequestController.LoadData();
       if ((widget.id ?? "") != "") {
@@ -82,6 +88,8 @@ class _ServicesRequestState extends State<ServicesRequest> {
             phoneNO.text = serviceRequestController.shopDetails.value.number!;
 
           }
+          selectYear=invoice!.data!.vYear;
+
 
         });
 
@@ -98,6 +106,35 @@ class _ServicesRequestState extends State<ServicesRequest> {
         Engine.text = invoice!.data!.vEngine ?? "";
         Mileage.text = invoice!.data!.vMilege ?? "";
         setState(() {});
+
+
+      }
+      DateTime now = DateTime. now();
+      DateFormat formatter = DateFormat('yyyy');
+      String formatted = formatter. format(now);
+      // years.add("Select Year");
+
+int count=0;
+      for(int i=1950;i<=int.parse(formatted);i++){
+
+        years.add(i.toString());
+        count++;
+        if ((widget.id ?? "") != "") {
+
+
+          if(invoice!.data!.vYear==i.toString()){
+        selectYear=i.toString();
+          }
+        }
+        if ((widget.code ?? "") != "") {
+          if(invoice!.data!.vYear==(getdata("Model Year")!.value ?? "")){
+            selectYear=years[count];
+          }
+
+        }
+      }
+      if((selectYear ?? "") =="") {
+        selectYear = years[years.length - 1];
       }
     });
 
@@ -108,8 +145,11 @@ class _ServicesRequestState extends State<ServicesRequest> {
   Widget build(BuildContext context) {
     return Obx(() {
       if (!serviceRequestController.check.value) {
-        return Center(
-          child: CircularProgressIndicator(),
+        return Material(
+          color: AppColors.white,
+          child: Center(
+            child: CircularProgressIndicator(),
+          ),
         );
       }
       return Scaffold(
@@ -181,8 +221,33 @@ class _ServicesRequestState extends State<ServicesRequest> {
                 Capital: true,
               ),
               CustomTextField(textEditingController: model, hint: "Model"),
-              CustomTextField(
-                  textEditingController: modelYear, hint: "Model Year"),
+              Center(
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(5),
+                      border: Border.all(color: AppColors.appColors, width: 1)),
+                  margin: EdgeInsets.symmetric(horizontal: 30, vertical: 1),
+                  padding: EdgeInsets.symmetric(horizontal: 5),
+                  child: DropdownButton(
+                    items: years.map((e) {
+                      return DropdownMenuItem(
+                          value: e,
+                          child: Container(
+                              width: Get.width * 0.7,
+                              height: 20,
+                              margin: EdgeInsets.symmetric(horizontal: 5),
+                              child: Text(e)));
+                    }).toList(),
+                    value: selectYear,
+                    borderRadius: BorderRadius.circular(10),
+                    onChanged: (String? v1) {
+                      selectYear=v1!;
+                      setState((){});
+                    },
+                  ),
+                ),
+              ),
               CustomTextField(textEditingController: Make, hint: "Make"),
               CustomTextField(textEditingController: color, hint: "Color"),
               CustomTextField(textEditingController: licNo, hint: "Lic No"),
@@ -190,6 +255,8 @@ class _ServicesRequestState extends State<ServicesRequest> {
               CustomTextField(textEditingController: Mileage, hint: "Mileage"),
               CustomTextField(
                   textEditingController: ro_po, hint: AppText.ro_po),
+              CustomTextField(
+                  textEditingController: amount, hint: AppText.amount),
               // CustomTextField(
               //     textEditingController: other, hint: AppText.other),
               // CustomTextField(
@@ -208,6 +275,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
                   itemCount: serviceRequestController
                       .formDataModel.value.data!.services!.length,
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                   itemBuilder: (context, index) {
                     return CustomCheckBox(
                         data: serviceRequestController
@@ -286,8 +354,6 @@ bool? check(index){
       Fluttertoast.showToast(msg: "Enter email ");
     } else if (phoneNO.text == "") {
       Fluttertoast.showToast(msg: "Enter phoneNO ");
-    } else if (modelYear.text == "") {
-      Fluttertoast.showToast(msg: "Enter modelYear ");
     } else if (model.text == "") {
       Fluttertoast.showToast(msg: "Enter model ");
     } else if (color.text == "") {
@@ -306,8 +372,9 @@ bool? check(index){
       Fluttertoast.showToast(msg: "Enter Mileage");
     } else if (yourName.text == "") {
       Fluttertoast.showToast(msg: "Enter yourName");
+    } else if (selectYear!.length > 4) {
+      Fluttertoast.showToast(msg: "Enter yourName");
     } else {    ProgressDialog.show(context);
-
     ServiceFormModel serviceFormModel = ServiceFormModel(
       id: widget.id ?? "",
           cName: yourName.text,
@@ -326,14 +393,13 @@ bool? check(index){
           vMilege: Mileage.text,
           vVin: VIN.text,
 
-          vYear: modelYear.text);
+          vYear: selectYear);
       ApiClient apiClient = ApiClient();
       apiClient.saveForm(serviceFormModel).then((value) {
         ProgressDialog.hide();
         Get.off(HomeScreen());
-        Fluttertoast.showToast(msg: value!.statusCode.toString());
+        Future.delayed(Duration(milliseconds: 1100)).then((value) =>      Fluttertoast.showToast(msg: "Success"));
       });
-      Fluttertoast.showToast(msg: "Success");
     }
   }
 }

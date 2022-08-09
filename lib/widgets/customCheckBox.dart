@@ -21,6 +21,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   void initState() {
 if(widget.value==true){
   serviceRequestController.servicesperformed.value.add(widget.data!.id);
+  serviceRequestController.servicesperformedString.value=widget.data!.id.toString();
 
 }
   }

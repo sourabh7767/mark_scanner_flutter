@@ -21,6 +21,7 @@ class AppText {
   static const String phoneNO = "Phone No";
   static const String VIN = "VIN";
   static const String ro_po = "RO/PO#";
+  static const String amount = "Amount";
   static const String other = "Other";
   static const String anyOtherInformation =
       "Any other information we should know.";

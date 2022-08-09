@@ -31,97 +31,46 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Material(
       child: Obx(() {
-        return Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(AppImages.AppLogo,
-                width: MediaQuery.of(context).size.width * 0.5),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.0, bottom: 10),
-              child: Center(
-                  child: Text(AppText.signin.toUpperCase(),
-                      style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.appColors))),
+        return SingleChildScrollView(
+          child: Column(
+
+            children: [  SizedBox(
+              height: Get.height * 0.2,
             ),
-            SizedBox(
-              height: Get.height * 0.01,
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: Get.width * 0.06,
-                vertical: Get.height * 0.01,
+              Image.asset(AppImages.AppLogo,
+                  width: MediaQuery.of(context).size.width * 0.5),
+              Padding(
+                padding: const EdgeInsets.only(top: 20.0, bottom: 10),
+                child: Center(
+                    child: Text(AppText.signin.toUpperCase(),
+                        style: TextStyle(
+                            fontSize: 30,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.appColors))),
               ),
-              child: TextField(
-                controller: emailController,
-                autocorrect: true,
-                style: TextStyle(
-                  fontSize: 20,
+              SizedBox(
+                height: Get.height * 0.01,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * 0.06,
+                  vertical: Get.height * 0.01,
                 ),
-                onChanged: (v) {
-                  loginController.validatePassword(emailController.text);
-                },
-                decoration: InputDecoration(
-                  errorText: !loginController.emailCheck.value
-                      ? AppText.pleaseEnterCorrectEmail ?? "Enter Text"
-                      : null,
-                  contentPadding: EdgeInsets.only(left: 10),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.appColors, width: 1)),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.appColors, width: 1)),
-                  disabledBorder: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.appColors, width: 1)),
-                  labelText: AppText.email,
-                  hintText: AppText.email,
-                  alignLabelWithHint: false,
-                  hintStyle: TextStyle(color: Colors.black),
-                  labelStyle: TextStyle(
-                    color: AppColors.appColors,
+                child: TextField(
+                  controller: emailController,
+                  autocorrect: true,
+                  autofocus: true,
+                  style: TextStyle(
+                    fontSize: 20,
                   ),
-                  border: OutlineInputBorder(
-                      borderSide:
-                          BorderSide(color: AppColors.appColors, width: 1)),
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: Get.width * 0.06,
-                vertical: Get.height * 0.01,
-              ),
-              child: TextField(
-                controller: passwordController,
-                autocorrect: true,
-                style: TextStyle(
-                  fontSize: 20,
-                ),
-                onChanged: (v) {
-                  loginController.validatePassword(passwordController.text);
-                },
-                obscureText:
-                    loginController.visblePassword.value ? false : true,
-                decoration: InputDecoration(
-                    errorText: !loginController.passwordCheck.value
-                        ? AppText.pleaseEnterCorrectPassword ?? "Enter Text"
+                  onChanged: (v) {
+                    loginController.validatePassword(emailController.text);
+                  },
+                  decoration: InputDecoration(
+                    errorText: !loginController.emailCheck.value
+                        ? AppText.pleaseEnterCorrectEmail ?? "Enter Text"
                         : null,
-                    focusColor: AppColors.appColors,
-                    fillColor: AppColors.appColors,
-                    suffixIcon: InkWell(
-                        onTap: () {
-                          loginController.visblePassword.value =
-                              !loginController.visblePassword.value;
-                        },
-                        child: Icon(
-                          loginController.visblePassword.value
-                              ? Icons.visibility
-                              : Icons.visibility_off,
-                          color: AppColors.appColors,
-                        )),
+                    contentPadding: EdgeInsets.only(left: 10),
                     focusedBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: AppColors.appColors, width: 1)),
@@ -131,9 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     disabledBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: AppColors.appColors, width: 1)),
-                    labelText: AppText.password,
-                    hintText: AppText.password,
-                    contentPadding: EdgeInsets.only(left: 10),
+                    labelText: AppText.email,
+                    hintText: AppText.email,
                     alignLabelWithHint: false,
                     hintStyle: TextStyle(color: Colors.black),
                     labelStyle: TextStyle(
@@ -141,45 +89,105 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     border: OutlineInputBorder(
                         borderSide:
-                            BorderSide(color: AppColors.appColors, width: 1))),
+                            BorderSide(color: AppColors.appColors, width: 1)),
+                  ),
+                ),
               ),
-            ),
-            SizedBox(
-              height: Get.height * 0.04,
-            ),
-            TextButton(
-                onPressed: () {
-                  setState((){});
-                  ProgressDialog.show(context);
-                  ApiClient apiClient = ApiClient();
+              Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: Get.width * 0.06,
+                  vertical: Get.height * 0.01,
+                ),
+                child: TextField(
+                  controller: passwordController,
+                  autocorrect: true,
+                  autofocus: true,
 
-                  apiClient
-                      .login(emailController.text, passwordController.text)
-                      .then((value) {
-                    if (value) {
-                      Get.off(HomeScreen());
-                    } else {
-                      Fluttertoast.showToast(msg: "SomeThink Is Wrong");
-                    }
-                    ProgressDialog.hide();
+                  style: TextStyle(
+                    fontSize: 20,
+                  ),
+                  onChanged: (v) {
+                    loginController.validatePassword(passwordController.text);
+                  },
+                  obscureText:
+                      loginController.visblePassword.value ? false : true,
+                  decoration: InputDecoration(
+                      errorText: !loginController.passwordCheck.value
+                          ? AppText.pleaseEnterCorrectPassword ?? "Enter Text"
+                          : null,
+                      focusColor: AppColors.appColors,
+                      fillColor: AppColors.appColors,
 
-                  });
-                },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(AppColors.appColors)),
-                child: Text(
-                  AppText.signin,
-                  style: TextStyle(color: AppColors.white),
-                )),
-            SizedBox(
-              height: Get.height * 0.04,
-            ),
-            SizedBox(height: Get.height * 0.01),
-            SizedBox(
-              height: Get.height * 0.05,
-            ),
-          ],
+                      suffixIcon: InkWell(
+                          onTap: () {
+                            loginController.visblePassword.value =
+                                !loginController.visblePassword.value;
+                          },
+                          child: Icon(
+                            loginController.visblePassword.value
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: AppColors.appColors,
+                          )),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: AppColors.appColors, width: 1)),
+                      enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: AppColors.appColors, width: 1)),
+                      disabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: AppColors.appColors, width: 1)),
+                      labelText: AppText.password,
+                      hintText: AppText.password,
+                      contentPadding: EdgeInsets.only(left: 10),
+                      alignLabelWithHint: false,
+                      hintStyle: TextStyle(color: Colors.black),
+                      labelStyle: TextStyle(
+                        color: AppColors.appColors,
+                      ),
+                      border: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: AppColors.appColors, width: 1))),
+                ),
+              ),
+              SizedBox(
+                height: Get.height * 0.04,
+              ),
+              TextButton(
+                  onPressed: () {
+                    setState((){});
+                    ProgressDialog.show(context);
+                    ApiClient apiClient = ApiClient();
+
+                    apiClient
+                        .login(emailController.text, passwordController.text)
+                        .then((value) {
+                      if (value) {
+                        Get.off(HomeScreen());
+                      } else {
+                        Fluttertoast.showToast(msg: "SomeThink Is Wrong");
+                      }
+                      ProgressDialog.hide();
+
+                    });
+                  },
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(AppColors.appColors)),
+                  child: Text(
+                    AppText.signin,
+                    style: TextStyle(color: AppColors.white),
+                  )),
+              SizedBox(
+                height: Get.height * 0.04,
+              ),
+              SizedBox(height: Get.height * 0.01),
+              SizedBox(
+                height: Get.height * 0.2,
+              ),
+            ],
+          ),
         );
       }),
     );

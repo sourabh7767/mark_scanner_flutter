@@ -34,7 +34,11 @@ class CustomTextField extends StatelessWidget {
         textCapitalization: (Capital ?? false)
             ? TextCapitalization.characters
             : TextCapitalization.none,
+        autofocus: true,
+        // onSubmitted: (v)=>FocusScope.of(context).nextFocus(),
+onEditingComplete: (){FocusScope.of(context).nextFocus();},
         decoration: InputDecoration(
+
           focusColor: AppColors.appColors,
           fillColor: AppColors.appColors,
           focusedBorder: (inputLine ?? false)
