@@ -38,8 +38,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: ListView(
           children: [
            UserAccountsDrawerHeader(
-                  accountName: Text(''),
-                  accountEmail: Text(email ?? ""),
+                  accountName: Text(email ?? ""),
+                  accountEmail: Text(""),
                   currentAccountPicture: CircleAvatar(
                     child: ClipOval(
                       child: Icon(

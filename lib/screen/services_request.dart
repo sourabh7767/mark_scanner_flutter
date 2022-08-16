@@ -127,8 +127,8 @@ int count=0;
           }
         }
         if ((widget.code ?? "") != "") {
-          if(invoice!.data!.vYear==(getdata("Model Year")!.value ?? "")){
-            selectYear=years[count];
+          if(i.toString()==(getdata("Model Year")!.value ?? "").toString()){
+            selectYear=i.toString();
           }
 
         }
