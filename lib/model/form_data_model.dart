@@ -65,6 +65,8 @@ class ShopDetails {
   String? dialCode;
   String? iso;
   String? number;
+  String? address;
+  String? fax;
   String? createdAt;
   String? updatedAt;
 
@@ -75,6 +77,8 @@ class ShopDetails {
         this.dialCode,
         this.iso,
         this.number,
+        this.address,
+        this.fax,
         this.createdAt,
         this.updatedAt});
 
@@ -85,6 +89,8 @@ class ShopDetails {
     dialCode = json['dial_code'];
     iso = json['iso'];
     number = json['number'];
+    address = json['address'];
+    fax = json['fax'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -97,6 +103,8 @@ class ShopDetails {
     data['dial_code'] = this.dialCode;
     data['iso'] = this.iso;
     data['number'] = this.number;
+    data['address'] = this.address;
+    data['fax'] = this.fax;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
@@ -105,15 +113,25 @@ class ShopDetails {
 
 class Services {
   int? id;
-  String? name;
+  String? description;
+  int? amount;
+  String? code;
   String? createdAt;
   String? updatedAt;
 
-  Services({this.id, this.name, this.createdAt, this.updatedAt});
+  Services(
+      {this.id,
+        this.description,
+        this.amount,
+        this.code,
+        this.createdAt,
+        this.updatedAt});
 
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
+    description = json['description'];
+    amount = json['amount'];
+    code = json['code'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -121,7 +139,9 @@ class Services {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['name'] = this.name;
+    data['description'] = this.description;
+    data['amount'] = this.amount;
+    data['code'] = this.code;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;

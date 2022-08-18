@@ -198,7 +198,8 @@ int count=0;
                       email.text =
                           serviceRequestController.shopDetails.value.email!;
                       phoneNO.text =
-                          serviceRequestController.shopDetails.value.number!;
+                          serviceRequestController.shopDetails.value.number!;address.text =
+                          serviceRequestController.shopDetails.value.address!;
                     },
                   ),
                 ),

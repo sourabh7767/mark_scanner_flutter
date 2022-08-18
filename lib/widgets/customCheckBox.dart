@@ -18,9 +18,10 @@ class CustomCheckBox extends StatefulWidget {
 class _CustomCheckBoxState extends State<CustomCheckBox> {
   ServiceRequestController serviceRequestController=Get.put(ServiceRequestController());
 TextEditingController textEditingController=TextEditingController();
-int count=0;
+int count=1;
   @override
   void initState() {
+    textEditingController.text=widget.data!.amount.toString();
 if(widget.value==true){
   serviceRequestController.servicesperformed.value.add(widget.data!.id);
   serviceRequestController.servicesperformedString.value=widget.data!.id.toString();
@@ -39,7 +40,7 @@ if(widget.value==true){
             children: [
               Container(
                   width: Get.width*0.7,
-                  child: Text(widget.data!.name!)),
+                  child: Text(widget.data!.description ?? "")),
               InkWell(
                 onTap: (){
              serviceRequestController.servicesperformed.value.add(widget.data!.id);
@@ -82,9 +83,10 @@ SizedBox(
     decoration: InputDecoration(
    border: UnderlineInputBorder()
     ),
+    textAlign: TextAlign.center,
   ),
 height: 30,
-width: 150,),
+width: 100,),
 
               Row(
                 children: [
@@ -116,8 +118,11 @@ alignment: Alignment.center,
                       child: Icon(Icons.add),
                       height: 30,
                       width: 30,),
-                  ),],
-              )
+                  ),
+
+                ],
+              ),
+              SizedBox()
 
 
             ],

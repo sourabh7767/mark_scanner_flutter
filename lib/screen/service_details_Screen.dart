@@ -264,7 +264,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
     String? dataCopy;
     formDataModel!.data!.services!.forEach((element) {
       if (element.id.toString() == data.toString()) {
-        servicesData.add(element.name ?? "");
+        servicesData.add(element.description ?? "");
       }
     });
   }
