@@ -3,13 +3,14 @@ import 'package:untitled/model/code_data_model.dart';
 import 'package:untitled/model/form_data_model.dart';
 import 'package:get/get.dart';
 
-class ServiceRequestController {
+import '../model/ServicesListModel.dart';
+
+class ServiceRequestController extends GetxController{
   Rx<FormDataModel> formDataModel = FormDataModel().obs;
   var check = false.obs;
   Rx<ShopDetails> shopDetails = ShopDetails().obs;
   Rx<CodeDataModel> codeData = CodeDataModel().obs;
-  var servicesperformed = [].obs;
-  var servicesperformedString = "".obs;
+  Rx<ServicesListModel> servicesListModel=ServicesListModel(services: []).obs;
 
   LoadData() async {
     ApiClient apiClient = ApiClient();

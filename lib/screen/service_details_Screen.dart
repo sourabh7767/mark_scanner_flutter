@@ -46,10 +46,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                 (context, AsyncSnapshot<ServiceFormResultModel?> snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
                   (formDataModel ?? "") != "") {
-                services = snapshot.data!.data!.services ?? "";
-                services!.split(',').forEach((element) {
-                  textGet(element.toString());
-                });
+
 
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -115,7 +112,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                             ),
                             CustomText(
                               title: "Model: ",
-                              text: snapshot.data!.data!.v_modal ?? "",
+                              text: snapshot.data!.data!.vModal ?? "",
                             ),
                             CustomText(
                               title: "Model Year: ",
@@ -130,7 +127,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                             ),
                             CustomText(
                               title: "Ro/PO#: ",
-                              text: snapshot.data!.data!.Ro_num ?? "",
+                              text: snapshot.data!.data!.roNum ?? "",
                             ),
                           ],
                         ),
@@ -209,34 +206,100 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: const [
-                            Text(
-                              "Code",
-                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
-                            ),  Text(
-                              "Description",
-                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
-                            ),Text(
-                              "Labor",
-                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
-                            ),Text(
-                              "Parts",
-                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
-                            ),Text(
-                              "QTY.",
-                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
-                            ),Text(
-                              "Total",
-                              style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                          children:  [
+                            Expanded(
+                              flex: 1,
+                              child: Text(
+                                "Code",
+                                style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                              ),
+                            ),  Expanded(
+                              flex: 2,
+                              child: Text(
+                                "Description",
+                                style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                              ),
+                            ),Expanded(
+                              flex: 1,
+                              child: Text(
+                                "Labor",
+                                style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                              ),
+                            ),Expanded(
+                              flex: 1,
+                              child: Text(
+                                "QTY.",
+                                style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                              ),
+                            ),Expanded(
+                              flex: 1,
+                              child: Text(
+                                "Total",
+                                style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                              ),
                             ),
                           ],
                         ),
+                        ListView.builder(
+                          shrinkWrap: true,
+                            itemCount: snapshot.data!.data!.services!.length,
+                            itemBuilder: (context,index){
+                          return Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+
+                                bottom: BorderSide(
+                                  color: Colors.black45,
+                                  width: 0.1
+                                )
+                              )
+                            ),
+                            padding: EdgeInsets.only(bottom: 4),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children:  [
+                                Expanded(
+                                  flex: 1,
+
+                                  child: Text(
+                                    snapshot.data!.data!.services![index].code.toString(),
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                                  ),
+                                ),    Expanded(
+                                flex: 2,
+                                  child: Text(
+                                    snapshot.data!.data!.services![index].description.toString(),
+                                    style: TextStyle(fontSize: 10,fontWeight: FontWeight.w700),
+                                  ),
+                                ),  Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    snapshot.data!.data!.services![index].amount.toString(),
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                                  ),
+                                ),   Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    snapshot.data!.data!.services![index].quantity.toString(),
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                                  ),
+                                ),  Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    snapshot.data!.data!.services![index].amount.toString(),
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
                         SizedBox(height: 80,),
                         Align(
                           alignment: Alignment.centerRight,
                           child: CustomText(
                             title: "Amount",
-                            text: "50",
+                            text: total(snapshot.data!),
                           ),
                         ),
                         Padding(
@@ -259,7 +322,13 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
       ),
     );
   }
-
+String total(ServiceFormResultModel data){
+    int totalAmount=0;
+    data!.data!.services!.forEach((element) {
+      totalAmount= int.parse(element!.amount!)+totalAmount;
+    });
+    return totalAmount.toString();
+}
   void textGet(String data) {
     String? dataCopy;
     formDataModel!.data!.services!.forEach((element) {

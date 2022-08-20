@@ -167,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                         Text("Model:",style: TextStyle(
                                           fontWeight: FontWeight.w600
                                         ),),
-                                  Text(data.data!.data![index].v_modal!),
+                                  Text(data.data!.data![index].vModal!),
                                       ],
                                     ),SizedBox(height: 5,),
                                     Wrap(

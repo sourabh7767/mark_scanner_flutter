@@ -105,10 +105,11 @@ class ApiClient {
     try {
       String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
       Response response = await _dio.get(ApiPath.invoiceListPath,
-          options: Options(headers: {"Authorization": "Bearer " + auth}));
+          options: Options(headers: {"Authorization": "Bearer " + auth,'Content-Type':'application/json',}));
       if (response.statusCode == 200) {
 
         InvoiceListModel invoiceListModel=InvoiceListModel.fromJson(response.data);
+        print("data --- "+invoiceListModel.data!.length.toString());
         return invoiceListModel;
       }
     } catch (e) {

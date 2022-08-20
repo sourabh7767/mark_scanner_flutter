@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:untitled/api/dio.dart';
 import 'package:untitled/model/service_form_model.dart';
@@ -76,6 +78,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
       if ((widget.id ?? "") != "") {
         ApiClient apiClient = ApiClient();
          invoice = await apiClient.invoice(widget.id!);
+         print("data-="+invoice!.data!.toJson().toString());
         serviceRequestController.formDataModel.value.data!.shopDetails!
             .forEach((element) {
           print("data ---------" +
@@ -96,13 +99,13 @@ class _ServicesRequestState extends State<ServicesRequest> {
         print("Data=" + invoice!.data!.toJson().toString());
         yourName.text = invoice!.data!.cName ?? "";
         modelYear.text = invoice!.data!.vYear ?? "";
-        model.text = invoice!.data!.v_modal ?? "";
+        model.text = invoice!.data!.vModal ?? "";
         color.text = invoice!.data!.vColor ?? "";
         address.text = invoice!.data!.cAddress ?? "";
         Make.text = invoice!.data!.vMake ?? "";
         VIN.text = invoice!.data!.vVin ?? "";
         licNo.text = invoice!.data!.vLicno ?? "";
-        ro_po.text = invoice!.data!.Ro_num ?? "";
+        ro_po.text = invoice!.data!.roNum ?? "";
         Engine.text = invoice!.data!.vEngine ?? "";
         Mileage.text = invoice!.data!.vMilege ?? "";
         setState(() {});
@@ -267,9 +270,12 @@ int count=0;
               //     textEditingController: anyOtherInformation,
               //     hint: AppText.pleaseEnterAnyTwoDigits),
               Center(
-                child: Text(
-                  AppText.servicesperformed,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    AppText.servicesperformed,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
                 ),
               ),
               ListView.builder(
@@ -282,6 +288,9 @@ int count=0;
                         data: serviceRequestController
                             .formDataModel.value.data!.services![index],
                         value:check(index),
+                        editData:gatdata(index)
+
+
 
                     );
                   }),
@@ -333,12 +342,29 @@ int count=0;
       );
     });
   }
+
+   gatdata(index){
+    if((invoice?? "")!="") {
+
+      var value;
+      invoice!.data!.services!.forEach((element) {
+        if (element.id.toString() == serviceRequestController
+            .formDataModel.value.data!.services![index].id.toString()) {
+          value=element;
+        }
+      });
+      return value;
+    }
+    return null;
+  }
 bool? check(index){
     if((invoice?? "")!="") {
-      String listItem = invoice!.data!.services!;
+
       bool? value;
-      listItem.split(',').forEach((element) {
-        if (element.toString() == serviceRequestController
+     invoice!.data!.services!.forEach((element) {
+       print("check --"+element.id.toString()+"  -  "+serviceRequestController
+           .formDataModel.value.data!.services![index].id.toString());
+        if (element.id.toString() == serviceRequestController
             .formDataModel.value.data!.services![index].id.toString()) {
           value = true;
         }
@@ -382,7 +408,7 @@ bool? check(index){
           cAddress: address.text,
           cEmail: email.text,
           cPhone: phoneNO.text,
-          services: serviceRequestController.servicesperformedString.value,
+          services:json.encode(serviceRequestController.servicesListModel.value.services!.map((v) => v.toJson()).toList()).toString(),
           Ro_num: ro_po.text,
           v_modal: model.text,
           shopId: serviceRequestController.shopDetails.value.id.toString(),
