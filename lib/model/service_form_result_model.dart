@@ -153,6 +153,7 @@ class Data {
 class Services {
   int? id;
   int? invoiceId;
+  int? service_id;
   String? description;
   String? amount;
   int? quantity;
@@ -163,6 +164,7 @@ class Services {
   Services(
       {this.id,
         this.invoiceId,
+        this.service_id,
         this.description,
         this.amount,
         this.quantity,
@@ -173,6 +175,7 @@ class Services {
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     invoiceId = json['invoice_id'];
+    service_id = json['service_id'];
     description = json['description'];
     amount = json['amount'];
     quantity = json['quantity'];
@@ -185,6 +188,7 @@ class Services {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['invoice_id'] = this.invoiceId;
+    data['service_id'] = this.service_id;
     data['description'] = this.description;
     data['amount'] = this.amount;
     data['quantity'] = this.quantity;

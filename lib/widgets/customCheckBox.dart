@@ -37,8 +37,10 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
 
        quantity: widget.editData!.quantity.toString() ?? "",
        amount: widget.editData!.amount.toString() ?? "",
-       id: widget.editData!.id.toString()
+       id: widget.editData!.service_id.toString()
      ));
+     textEditingController.text= widget.editData!.amount.toString();
+     count=widget.editData!.quantity ?? 1;
      setState((){});
     }
   }
@@ -123,20 +125,36 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
                     padding: EdgeInsets.symmetric(horizontal: 20,vertical: 2),
                     height: 30,
                     width: 100,
-                    child: TextField(
-                      controller: textEditingController,
-                      onChanged: (v){
-                        for(int i=0;i<serviceRequestController.servicesListModel.value.services!.length;i++){
-                          if(serviceRequestController.servicesListModel.value.services![i].id.toString()==widget.data!.id.toString())
-                          {
-                            serviceRequestController.servicesListModel.value.services![i].amount=textEditingController.text.toString();
-                            print("serviceRequestController "+serviceRequestController.servicesListModel.value.services!.map((v) => v.toJson().toString()).toList().toString());
+                    child: Theme(
+                      data: ThemeData(
+                          textSelectionHandleColor: Colors.transparent,
+                        textSelectionTheme: TextSelectionThemeData(
+                          selectionHandleColor: Colors.transparent
+                        ),
+
+                        ),
+                      child: TextField(
+                        controller: textEditingController, enableInteractiveSelection: true,
+
+                        onChanged: (v){
+                          for(int i=0;i<serviceRequestController.servicesListModel.value.services!.length;i++){
+                            if(serviceRequestController.servicesListModel.value.services![i].id.toString()==widget.data!.id.toString())
+                            {
+                              serviceRequestController.servicesListModel.value.services![i].amount=textEditingController.text.toString();
+                              print("serviceRequestController "+serviceRequestController.servicesListModel.value.services!.map((v) => v.toJson().toString()).toList().toString());
+                            }
                           }
-                        }
-                       setState((){});
-                      },
-                      decoration: InputDecoration(border: UnderlineInputBorder()),
-                      textAlign: TextAlign.center,
+                         setState((){});
+                        },
+                        maxLength: 7,
+autofocus: false,
+                        cursorRadius: Radius.circular(20),
+                        keyboardType: TextInputType.number,
+                        decoration: InputDecoration(border: UnderlineInputBorder(),
+
+                        counterText: ""),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                   ),
                 ],

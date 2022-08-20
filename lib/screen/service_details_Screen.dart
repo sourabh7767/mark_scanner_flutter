@@ -204,41 +204,61 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                           width: double.infinity,
                           color: AppColors.appColors,
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children:  [
-                            Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Code",
-                                style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                        Container(
+                          decoration: BoxDecoration(
+                              border: Border(
+
+                                  bottom: BorderSide(
+                                      color: Colors.black54,
+                                      width: 0.1
+                                  )
+                              )
+                          ),
+                          padding: EdgeInsets.only(bottom: 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children:  [
+                              Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "Code",
+                                  textAlign: TextAlign.center,
+
+                                  style: TextStyle(fontSize: MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                                ),
+                              ),  Expanded(
+                                flex: 2,
+                                child: Text(
+                                  "Description",
+                                  style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                                ),
+                              ),Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "Labor",
+                                  textAlign: TextAlign.center,
+
+                                  style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                                ),
+                              ),Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "QTY.",
+                                  textAlign: TextAlign.center,
+
+                                  style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                                ),
+                              ),Expanded(
+                                flex: 1,
+                                child: Text(
+                                  "Total",
+                                  textAlign: TextAlign.center,
+
+                                  style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                                ),
                               ),
-                            ),  Expanded(
-                              flex: 2,
-                              child: Text(
-                                "Description",
-                                style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
-                              ),
-                            ),Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Labor",
-                                style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
-                              ),
-                            ),Expanded(
-                              flex: 1,
-                              child: Text(
-                                "QTY.",
-                                style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
-                              ),
-                            ),Expanded(
-                              flex: 1,
-                              child: Text(
-                                "Total",
-                                style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
-                              ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                         ListView.builder(
                           shrinkWrap: true,
@@ -263,31 +283,39 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
 
                                   child: Text(
                                     snapshot.data!.data!.services![index].code.toString(),
-                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                                    textAlign: TextAlign.center,
+
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
                                   ),
                                 ),    Expanded(
                                 flex: 2,
                                   child: Text(
                                     snapshot.data!.data!.services![index].description.toString(),
-                                    style: TextStyle(fontSize: 10,fontWeight: FontWeight.w700),
+
+                                    style: TextStyle(fontSize: 10,fontWeight: FontWeight.w500),
                                   ),
                                 ),  Expanded(
                                   flex: 1,
                                   child: Text(
                                     snapshot.data!.data!.services![index].amount.toString(),
-                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                                    textAlign: TextAlign.center,
+
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
                                   ),
                                 ),   Expanded(
                                   flex: 1,
                                   child: Text(
                                     snapshot.data!.data!.services![index].quantity.toString(),
-                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
                                   ),
                                 ),  Expanded(
                                   flex: 1,
                                   child: Text(
                                     snapshot.data!.data!.services![index].amount.toString(),
-                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w700),
+                                    textAlign: TextAlign.center,
+
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
                                   ),
                                 ),
                               ],

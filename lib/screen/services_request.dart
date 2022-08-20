@@ -259,8 +259,8 @@ int count=0;
               CustomTextField(textEditingController: Mileage, hint: "Mileage"),
               CustomTextField(
                   textEditingController: ro_po, hint: AppText.ro_po),
-              CustomTextField(
-                  textEditingController: amount, hint: AppText.amount),
+              // CustomTextField(
+              //     textEditingController: amount, hint: AppText.amount),
               // CustomTextField(
               //     textEditingController: other, hint: AppText.other),
               // CustomTextField(
@@ -348,7 +348,7 @@ int count=0;
 
       var value;
       invoice!.data!.services!.forEach((element) {
-        if (element.id.toString() == serviceRequestController
+        if (element.service_id.toString() == serviceRequestController
             .formDataModel.value.data!.services![index].id.toString()) {
           value=element;
         }
@@ -362,9 +362,9 @@ bool? check(index){
 
       bool? value;
      invoice!.data!.services!.forEach((element) {
-       print("check --"+element.id.toString()+"  -  "+serviceRequestController
+       print("check --"+element.service_id.toString()+"  -  "+serviceRequestController
            .formDataModel.value.data!.services![index].id.toString());
-        if (element.id.toString() == serviceRequestController
+        if (element.service_id.toString() == serviceRequestController
             .formDataModel.value.data!.services![index].id.toString()) {
           value = true;
         }
