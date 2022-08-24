@@ -7,10 +7,12 @@ import 'package:untitled/model/invoice_list_model.dart';
 import 'package:untitled/model/service_form_model.dart';
 import 'package:untitled/model/service_form_result_model.dart';
 import 'package:untitled/model/user_model.dart';
+import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/utils/api_path.dart';
 import 'package:untitled/utils/local_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dio_client.dart';
+import 'package:get/get.dart' as getx;
 
 class ApiClient {
   Dio _dio = Dio();
@@ -37,7 +39,7 @@ class ApiClient {
         print("login" + userModel.toJson().toString());
         LocalStorage.SetString(LocalStorage.auth, userModel.data!.authToken!);
         LocalStorage.SetString(LocalStorage.email, userModel.data!.email!);
-        LocalStorage.SetString(LocalStorage.password, password);
+        LocalStorage.SetString(LocalStorage.name, userModel.data!.fullName!);
         return true;
       }
     } catch (e) {
@@ -58,7 +60,7 @@ class ApiClient {
             "new_password": newPassword,
             "confirm_new_password": confirmPassword
           }),
-          options: Options(headers: {"Authorization": "Bearer " + auth}));
+          options: Options(headers: {"Authorization": "Bearer " + auth,"Accept":"application/json"}));
       if (response.statusCode == 200) {
         UserModel userModel = UserModel.fromJson(response.data);
         print("login" + userModel.toJson().toString());
@@ -75,7 +77,7 @@ class ApiClient {
     try {
       String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
       Response response = await _dio.get(ApiPath.logoutPath,
-          options: Options(headers: {"Authorization": "Bearer " + auth}));
+          options: Options(headers: {"Authorization": "Bearer " + auth,"Accept":"application/json"}));
       if (response.statusCode == 200) {
         bool result = await LocalStorage.delectAllData();
 
@@ -86,11 +88,12 @@ class ApiClient {
     }
     return false;
   }
+
   Future<FormDataModel?> shopDetail() async {
     try {
       String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
       Response response = await _dio.get(ApiPath.shopDetailPath,
-          options: Options(headers: {"Authorization": "Bearer " + auth}));
+          options: Options(headers: {"Authorization": "Bearer " + auth,"Accept":"application/json"}));
       if (response.statusCode == 200) {
 
         FormDataModel formDataModel=FormDataModel.fromJson(response.data);
@@ -105,7 +108,7 @@ class ApiClient {
     try {
       String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
       Response response = await _dio.get(ApiPath.invoiceListPath,
-          options: Options(headers: {"Authorization": "Bearer " + auth,'Content-Type':'application/json',}));
+          options: Options(headers: {"Authorization": "Bearer " + auth,"Accept":"application/json",}));
       if (response.statusCode == 200) {
 
         InvoiceListModel invoiceListModel=InvoiceListModel.fromJson(response.data);
@@ -123,7 +126,7 @@ class ApiClient {
       print("Data --- "+data.toJson().toString());
       Response response = await _dio.post(ApiPath.saveInvoicePath,
           data: FormData.fromMap(data.toJson()),
-          options: Options(headers: {"Authorization": "Bearer " + auth}));
+          options: Options(headers: {"Authorization": "Bearer " + auth,"Accept":"application/json"}));
       print("res"+response.toString());
       if (response.statusCode == 200) {
 
@@ -140,7 +143,7 @@ class ApiClient {
     try {
       String auth = await LocalStorage.getString(LocalStorage.auth) ?? "";
       Response response = await _dio.get(ApiPath.invoiceListPath+"/"+id,
-          options: Options(headers: {"Authorization": "Bearer " + auth}));
+          options: Options(headers: {"Authorization": "Bearer " + auth,"Accept":"application/json"}));
       if (response.statusCode == 200) {
 
         ServiceFormResultModel invoiceModel=ServiceFormResultModel.fromJson(response.data);

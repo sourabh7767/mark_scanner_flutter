@@ -1,5 +1,9 @@
 import 'package:dio/dio.dart';
 
+import '../screen/login/login_screen.dart';
+import '../utils/local_storage.dart';
+import 'package:get/get.dart' as getx;
+
 class LoggingInterceptor extends Interceptor {
 
   int _maxCharactersPerLine = 200;
@@ -44,7 +48,7 @@ class LoggingInterceptor extends Interceptor {
 
         }
 
-        print(
+        print("c"+
 
             responseAsString.substring(i * _maxCharactersPerLine, endingIndex));
 
@@ -52,7 +56,7 @@ class LoggingInterceptor extends Interceptor {
 
     } else {
 
-      print(response.data);
+      print("D"+response.data);
 
     }
 
@@ -67,7 +71,11 @@ class LoggingInterceptor extends Interceptor {
   Future onError(DioError err, ErrorInterceptorHandler errorInterceptorHandler) async {
 
     print("<-- Error -->");
-
+print("code"+err.response!.data!["message"].toString());
+    if (err.response!.data["message"] == "Unauthenticated.") {
+      LocalStorage.delectAllData();
+      getx.Get.offAll(LoginScreen());
+    }
     print(err.error);
 
     print(err.message);

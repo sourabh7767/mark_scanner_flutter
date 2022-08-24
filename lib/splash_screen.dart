@@ -33,26 +33,16 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
 
-    String? email=await LocalStorage.getString(LocalStorage.email) ?? "";
-    String? password=await LocalStorage.getString(LocalStorage.password) ?? "";
+    String? auth=await LocalStorage.getString(LocalStorage.auth) ?? "";
+
       Future.delayed(Duration(seconds: 2)).then((value) {
-          if(email=="" || password==""){
+          if(auth==""){
             Get.off(LoginScreen());
 
       }else{
-            ApiClient apiClient = ApiClient();
-            apiClient
-                .login(email, password)
-                .then((value) {
-              if (value) {
                 Get.off(HomeScreen());
-              } else {
-                Get.off(LoginScreen());
 
-                Fluttertoast.showToast(msg: "SomeThink Is Wrong");
-              }
 
-            });
           }
       });
 

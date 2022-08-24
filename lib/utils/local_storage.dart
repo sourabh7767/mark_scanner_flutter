@@ -4,7 +4,7 @@ class LocalStorage{
   LocalStorage._();
  static String auth="Auth";
  static String email="email";
- static String password="password";
+ static String name="Name";
 
    static Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
 

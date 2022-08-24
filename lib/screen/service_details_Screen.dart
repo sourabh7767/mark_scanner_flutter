@@ -8,6 +8,7 @@ import 'package:untitled/widgets/custom_text.dart';
 
 import '../model/form_data_model.dart';
 import '../model/service_form_result_model.dart';
+import 'package:intl/intl.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   String? id;
@@ -64,12 +65,12 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                             Column(
                               children: [
                                 CustomText(
-                                  title: "Email: ",
-                                  text: snapshot.data!.data!.shopEmail ?? "",
+                                  title: "Invoice No: ",
+                                  text: snapshot.data!.data!.invoiceId ?? "",
                                 ),
                                 CustomText(
-                                  title: "Phone No : ",
-                                  text: snapshot.data!.data!.shopNumber ?? "",
+                                  title: "Date : ",
+                                  text:  DateFormat("MM/dd/yyyy").format(DateTime.parse(snapshot.data!.data!.createdAt!)),
                                 ),
                               ],
                             )
@@ -86,13 +87,11 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                               title: "Shop Name: ",
                               text: snapshot.data!.data!.shopName ?? "",
                             ),
-                            CustomText(
-                              title: "Writer's Name: ",
-                              text: snapshot.data!.data!.cName ?? "",
-                            ),
+
                             CustomText(
                               title: "Email: ",
                               text: snapshot.data!.data!.shopEmail ?? "",
+
                             ),
                             CustomText(
                               title: "Phone No : ",
@@ -134,6 +133,12 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         SizedBox(
                           height: 10,
                         ),
+                        Container(
+                          height: 1,
+                          margin: EdgeInsets.symmetric(vertical: 20),
+                          width: double.infinity,
+                          color: AppColors.appColors,
+                        ),
                         Center(
                           child: Text(
                             AppText.servicesperformed,
@@ -146,28 +151,23 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         SizedBox(
                           height: 8,
                         ),
-                        ListView.builder(
-                            itemCount: servicesData.length,
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return Container(
-                                  padding: EdgeInsets.symmetric(horizontal: 20),
-                                  child: Text(
-                                    (index + 1).toString() +
-                                        "." +
-                                        (servicesData.elementAt(index) ?? ""),
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400),
-                                  ));
-                            }),
-                        Container(
-                          height: 1,
-                          margin: EdgeInsets.symmetric(vertical: 20),
-                          width: double.infinity,
-                          color: AppColors.appColors,
-                        ),
+                        // ListView.builder(
+                        //     itemCount: servicesData.length,
+                        //     shrinkWrap: true,
+                        //     physics: NeverScrollableScrollPhysics(),
+                        //     itemBuilder: (context, index) {
+                        //       return Container(
+                        //           padding: EdgeInsets.symmetric(horizontal: 20),
+                        //           child: Text(
+                        //             (index + 1).toString() +
+                        //                 "." +
+                        //                 (servicesData.elementAt(index) ?? ""),
+                        //             style: TextStyle(
+                        //                 fontSize: 16,
+                        //                 fontWeight: FontWeight.w400),
+                        //           ));
+                        //     }),
+
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Text.rich(
@@ -179,7 +179,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
 
-                                TextSpan(text: ' MOBILE SERVICE REQUESTED BY (PERSON REQUESTING SERVICE)',),
+                                TextSpan(text: ' MOBILE SERVICE REQUESTED BY ${snapshot.data!.data!.cName ?? ""}',),
                               ],
                             ),
                           ),
@@ -192,7 +192,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                                 "TECHNICIAN: ",
                                 style: TextStyle(fontSize: 14,fontWeight: FontWeight.w700),
                               ), Text(
-                                "JEFF GRAY",
+                                snapshot.data!.data!.cName ?? "",
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],

@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 Get.to(ServicesRequest());
               },
               leading: Icon(Icons.format_align_justify_outlined),
-              title: Text(AppText.createServicesPerformed),
+              title: Text("Create Manual Invoice"),
             ),
             ListTile(
               onTap: () {

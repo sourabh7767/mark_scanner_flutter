@@ -23,6 +23,7 @@ class CustomText extends StatelessWidget {
           ),
           SizedBox(height: 5,),
           Text((text ?? ""),
+          maxLines: 1,
           style: TextStyle(
              fontWeight: FontWeight.w400,
             fontSize: 16
