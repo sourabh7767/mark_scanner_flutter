@@ -19,6 +19,7 @@ import 'package:intl/intl.dart';
 
 import '../model/invoice_list_model.dart';
 import '../model/service_form_result_model.dart';
+import 'dart:math' as math;
 
 class ServicesRequest extends StatefulWidget {
   String? id;
@@ -218,20 +219,30 @@ class _ServicesRequestState extends State<ServicesRequest> {
                 Capital: true,
                 suffixIcon: InkWell(
                   onTap: () async {
+                    ProgressDialog.show(context);
                     widget.code = VIN.text;
                     if ((widget.code ?? "") != "") {
                       await serviceRequestController.LoadFormData(widget.code);
                       Make.text = getdata("Make")!.value ?? "";
                       modelYear.text = getdata("Model Year")!.value ?? "";
+                      if((getdata("Model Year")!.value ?? "")!=""){
+                      selectYear = getdata("Model Year")!.value ?? "";}else{
+                        Fluttertoast.showToast(msg: "VIN No is Wrong");
+                      }
                       model.text = getdata("Model")!.value ?? "";
                       Engine.text =
                           getdata("Engine Number of Cylinders")!.value ?? "";
                       VIN.text = widget.code ?? "";
                     }
+                    setState(() {});
+                    ProgressDialog.hide();
                   },
-                  child: Icon(
-                    Icons.get_app_outlined,
-                    color: AppColors.appColors,
+                  child: Transform.rotate(
+                    angle: 270 * math.pi / 180,
+                    child: Icon(
+                      Icons.get_app_outlined,
+                      color: AppColors.appColors,
+                    ),
                   ),
                 ),
               ),

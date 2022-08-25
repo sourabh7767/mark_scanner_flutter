@@ -4,6 +4,7 @@ import 'package:untitled/model/invoice_list_model.dart';
 import 'package:untitled/utils/app_color.dart';
 import 'package:untitled/utils/app_images.dart';
 import 'package:untitled/utils/app_text.dart';
+import 'package:untitled/utils/local_storage.dart';
 import 'package:untitled/widgets/custom_text.dart';
 
 import '../model/form_data_model.dart';
@@ -24,11 +25,12 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
   List<String> servicesData = [];
   FormDataModel? formDataModel;
   String? services;
-
+String? name;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       formDataModel = await apiClient.shopDetail();
+     name= await LocalStorage.getString(LocalStorage.name) ;
       setState(() {});
     });
   }
@@ -192,7 +194,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                                 "TECHNICIAN: ",
                                 style: TextStyle(fontSize: 14,fontWeight: FontWeight.w700),
                               ), Text(
-                                snapshot.data!.data!.cName ?? "",
+                                (name ?? ""),
                                 style: TextStyle(fontSize: 14),
                               ),
                             ],
@@ -263,6 +265,7 @@ class _ServiceDetailScreenState extends State<ServiceDetailScreen> {
                         ListView.builder(
                           shrinkWrap: true,
                             itemCount: snapshot.data!.data!.services!.length,
+                            physics: NeverScrollableScrollPhysics(),
                             itemBuilder: (context,index){
                           return Container(
                             decoration: BoxDecoration(
