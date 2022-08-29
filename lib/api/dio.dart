@@ -11,6 +11,7 @@ import 'package:untitled/screen/login/login_screen.dart';
 import 'package:untitled/utils/api_path.dart';
 import 'package:untitled/utils/local_storage.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import '../widgets/loader.dart';
 import 'dio_client.dart';
 import 'package:get/get.dart' as getx;
 
@@ -128,6 +129,16 @@ class ApiClient {
           data: FormData.fromMap(data.toJson()),
           options: Options(headers: {"Authorization": "Bearer " + auth,"Accept":"application/json"}));
       print("res"+response.toString());
+      Future.delayed(Duration(seconds: 40)).then((value) {
+        if(response.statusCode == 200){
+
+        }else{
+          ProgressDialog.hide();
+          getx.Get.back();
+          Fluttertoast.showToast(msg: "Something is wrong");
+        }
+
+      });
       if (response.statusCode == 200) {
 
         ServiceFormResultModel serviceFormResultModel=ServiceFormResultModel.fromJson(response.data);

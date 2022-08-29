@@ -43,7 +43,6 @@ class _ServicesRequestState extends State<ServicesRequest> {
   TextEditingController VIN = TextEditingController();
   TextEditingController licNo = TextEditingController();
   TextEditingController ro_po = TextEditingController();
-  TextEditingController Engine = TextEditingController();
   TextEditingController address = TextEditingController();
   TextEditingController Mileage = TextEditingController();
   TextEditingController amount = TextEditingController();
@@ -73,7 +72,6 @@ class _ServicesRequestState extends State<ServicesRequest> {
         Make.text = getdata("Make")!.value ?? "";
         modelYear.text = getdata("Model Year")!.value ?? "";
         model.text = getdata("Model")!.value ?? "";
-        Engine.text = getdata("Engine Number of Cylinders")!.value ?? "";
         VIN.text = widget.code ?? "";
       }
       await serviceRequestController.LoadData();
@@ -105,7 +103,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
         VIN.text = invoice!.data!.vVin ?? "";
         licNo.text = invoice!.data!.vLicno ?? "";
         ro_po.text = invoice!.data!.roNum ?? "";
-        Engine.text = invoice!.data!.vEngine ?? "";
+        // Engine.text = invoice!.data!.vEngine ?? "";
         Mileage.text = invoice!.data!.vMilege ?? "";
         setState(() {});
       }
@@ -230,8 +228,8 @@ class _ServicesRequestState extends State<ServicesRequest> {
                         Fluttertoast.showToast(msg: "VIN No is Wrong");
                       }
                       model.text = getdata("Model")!.value ?? "";
-                      Engine.text =
-                          getdata("Engine Number of Cylinders")!.value ?? "";
+                      // Engine.text =
+                      //     getdata("Engine Number of Cylinders")!.value ?? "";
                       VIN.text = widget.code ?? "";
                     }
                     setState(() {});
@@ -276,7 +274,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
               CustomTextField(textEditingController: Make, hint: "Make"),
               CustomTextField(textEditingController: model, hint: "Model"),
               CustomTextField(textEditingController: color, hint: "Color"),
-              CustomTextField(textEditingController: Engine, hint: "Engine"),
+              // CustomTextField(textEditingController: Engine, hint: "Engine"),
               CustomTextField(textEditingController: licNo, hint: "Lic No"),
               CustomTextField(textEditingController: Mileage, hint: "Mileage"),
               CustomTextField(
@@ -418,8 +416,6 @@ class _ServicesRequestState extends State<ServicesRequest> {
       Fluttertoast.showToast(msg: "Enter licNo ");
     } else if (ro_po.text == "") {
       Fluttertoast.showToast(msg: "Enter ro_po ");
-    } else if (Engine.text == "") {
-      Fluttertoast.showToast(msg: "Enter Engine ");
     } else if (Mileage.text == "") {
       Fluttertoast.showToast(msg: "Enter Mileage");
     } else if (yourName.text == "") {
@@ -444,7 +440,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
           shopId: serviceRequestController.shopDetails.value.id.toString(),
           status: status,
           vColor: color.text,
-          vEngine: Engine.text,
+          vEngine:"abc",
           vLicno: licNo.text,
           vMake: Make.text,
           vMilege: Mileage.text,
