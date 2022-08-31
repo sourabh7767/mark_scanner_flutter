@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:untitled/screen/services_request.dart';
 import 'package:untitled/utils/app_color.dart';
@@ -20,8 +21,21 @@ class _ScannerState extends State<Scanner> {
   QRViewController? controller;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   bool? check;
+  Future<bool> askPermission() async{
+    PermissionStatus status = await Permission.contacts.request();
+    if(status.isDenied == true)
+    {
+      askPermission();
+    }
+    else
+    {
+      return true;
+    }
+    return false;
+  }
   @override
   void initState() {
+    askPermission();
     controller?.resumeCamera();
   } // In order to get hot reload to work we need to pause the camera if the platform
   // is android, or resume the camera if the platform is iOS.
@@ -133,7 +147,7 @@ check=false;
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
     log('${DateTime.now().toIso8601String()}_onPermissionSet $p');
     if(!p){
-      Get.back();
+      // Get.back();
     }
     if (!p) {
       ScaffoldMessenger.of(context).showSnackBar(

@@ -363,7 +363,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
     if ((invoice ?? "") != "") {
       var value;
       invoice!.data!.services!.forEach((element) {
-        if (element.service_id.toString() ==
+        if (element.serviceId.toString() ==
             serviceRequestController
                 .formDataModel.value.data!.services![index].id
                 .toString()) {
@@ -380,12 +380,12 @@ class _ServicesRequestState extends State<ServicesRequest> {
       bool? value;
       invoice!.data!.services!.forEach((element) {
         print("check --" +
-            element.service_id.toString() +
+            element.serviceId.toString() +
             "  -  " +
             serviceRequestController
                 .formDataModel.value.data!.services![index].id
                 .toString());
-        if (element.service_id.toString() ==
+        if (element.serviceId.toString() ==
             serviceRequestController
                 .formDataModel.value.data!.services![index].id
                 .toString()) {

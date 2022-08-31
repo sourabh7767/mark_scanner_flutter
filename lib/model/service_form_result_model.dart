@@ -38,7 +38,7 @@ class Data {
   String? cEmail;
   String? cAddress;
   String? cPhone;
-  String? cFax;
+  Null? cFax;
   String? vYear;
   String? vMake;
   String? vModal;
@@ -49,9 +49,10 @@ class Data {
   String? vMilege;
   int? isEmailSent;
   String? roNum;
+  Null? total;
   int? status;
   String? createdAt;
-  String? updatedAt;
+  Null? updatedAt;
   List<Services>? services;
 
   Data(
@@ -77,6 +78,7 @@ class Data {
         this.vMilege,
         this.isEmailSent,
         this.roNum,
+        this.total,
         this.status,
         this.createdAt,
         this.updatedAt,
@@ -84,30 +86,31 @@ class Data {
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    userId = json['user_id'] ?? "";
-    invoiceId = json['invoice_id'] ?? "";
-    shopId = json['shop_id'] ?? "";
-    shopName = json['shop_name'] ?? "";
-    shopEmail = json['shop_email'] ?? "";
-    shopNumber = json['shop_number'] ?? "";
-    cName = json['c_name'] ?? "";
-    cEmail = json['c_email'] ?? "";
-    cAddress = json['c_address'] ?? "";
-    cPhone = json['c_phone'] ?? "";
-    cFax = json['c_fax'] ?? "";
-    vYear = json['v_year'] ?? "";
-    vMake = json['v_make'] ?? "";
-    vModal = json['v_modal'] ?? "";
-    vLicno = json['v_licno'] ?? "";
-    vVin = json['v_vin'] ?? "";
-    vColor = json['v_color'] ?? "";
-    vEngine = json['v_engine'] ?? "";
-    vMilege = json['v_milege'] ?? "";
-    isEmailSent = json['is_email_sent'] ?? "";
-    roNum = json['Ro_num'] ?? "";
-    status = json['status'] ?? "";
-    createdAt = json['created_at'] ?? "";
-    updatedAt = json['updated_at'] ?? "";
+    userId = json['user_id'];
+    invoiceId = json['invoice_id'];
+    shopId = json['shop_id'];
+    shopName = json['shop_name'];
+    shopEmail = json['shop_email'];
+    shopNumber = json['shop_number'];
+    cName = json['c_name'];
+    cEmail = json['c_email'];
+    cAddress = json['c_address'];
+    cPhone = json['c_phone'];
+    cFax = json['c_fax'];
+    vYear = json['v_year'];
+    vMake = json['v_make'];
+    vModal = json['v_modal'];
+    vLicno = json['v_licno'];
+    vVin = json['v_vin'];
+    vColor = json['v_color'];
+    vEngine = json['v_engine'];
+    vMilege = json['v_milege'];
+    isEmailSent = json['is_email_sent'];
+    roNum = json['Ro_num'];
+    total = json['total'];
+    status = json['status'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
     if (json['services'] != null) {
       services = <Services>[];
       json['services'].forEach((v) {
@@ -140,6 +143,7 @@ class Data {
     data['v_milege'] = this.vMilege;
     data['is_email_sent'] = this.isEmailSent;
     data['Ro_num'] = this.roNum;
+    data['total'] = this.total;
     data['status'] = this.status;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
@@ -153,33 +157,36 @@ class Data {
 class Services {
   int? id;
   int? invoiceId;
-  int? service_id;
   String? description;
   String? amount;
   int? quantity;
   String? code;
-  String? createdAt;
-  String? updatedAt;
+  int? type;
+  int? serviceId;
+  Null? createdAt;
+  Null? updatedAt;
 
   Services(
       {this.id,
         this.invoiceId,
-        this.service_id,
         this.description,
         this.amount,
         this.quantity,
         this.code,
+        this.type,
+        this.serviceId,
         this.createdAt,
         this.updatedAt});
 
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     invoiceId = json['invoice_id'];
-    service_id = json['service_id'];
     description = json['description'];
     amount = json['amount'];
     quantity = json['quantity'];
     code = json['code'];
+    type = json['type'];
+    serviceId = json['service_id'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -188,13 +195,15 @@ class Services {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
     data['invoice_id'] = this.invoiceId;
-    data['service_id'] = this.service_id;
     data['description'] = this.description;
     data['amount'] = this.amount;
     data['quantity'] = this.quantity;
     data['code'] = this.code;
+    data['type'] = this.type;
+    data['service_id'] = this.serviceId;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
   }
 }
+

@@ -37,7 +37,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
 
        quantity: widget.editData!.quantity.toString() ?? "",
        amount: widget.editData!.amount.toString() ?? "",
-       id: widget.editData!.service_id.toString()
+       id: widget.editData!.serviceId.toString()
      ));
      textEditingController.text= widget.editData!.amount.toString();
      count=widget.editData!.quantity ?? 1;

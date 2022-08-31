@@ -245,6 +245,14 @@ String? name;
                               ),Expanded(
                                 flex: 1,
                                 child: Text(
+                                  "Part",
+                                  textAlign: TextAlign.center,
+
+                                  style: TextStyle(fontSize:  MediaQuery.of(context).size.width*0.042,fontWeight: FontWeight.w700),
+                                ),
+                              ),Expanded(
+                                flex: 1,
+                                child: Text(
                                   "QTY.",
                                   textAlign: TextAlign.center,
 
@@ -300,7 +308,15 @@ String? name;
                                 ),  Expanded(
                                   flex: 1,
                                   child: Text(
-                                    snapshot.data!.data!.services![index].amount.toString(),
+                                      (snapshot.data!.data!.services![index].type==1)? snapshot.data!.data!.services![index].amount.toString():"",
+                                    textAlign: TextAlign.center,
+
+                                    style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
+                                  ),
+                                ), Expanded(
+                                  flex: 1,
+                                  child: Text(
+                                    (snapshot.data!.data!.services![index].type==2)? snapshot.data!.data!.services![index].amount.toString():"",
                                     textAlign: TextAlign.center,
 
                                     style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
