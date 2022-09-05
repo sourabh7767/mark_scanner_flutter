@@ -47,8 +47,7 @@ String? name;
             future: apiClient.invoice(widget.id!),
             builder:
                 (context, AsyncSnapshot<ServiceFormResultModel?> snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  (formDataModel ?? "") != "") {
+              if (snapshot.connectionState == ConnectionState.done) {
 
 
                 return Padding(
@@ -370,10 +369,11 @@ String? name;
     );
   }
 String total(ServiceFormResultModel data){
-    int totalAmount=0;
+    double totalAmount=0.00;
     data!.data!.services!.forEach((element) {
-      totalAmount= int.parse(element!.amount!)+totalAmount;
+      totalAmount= double.parse(element!.amount!)+totalAmount;
     });
+
     return totalAmount.toString();
 }
   void textGet(String data) {

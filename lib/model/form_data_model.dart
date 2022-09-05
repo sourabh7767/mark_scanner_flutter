@@ -116,6 +116,7 @@ class Services {
   String? description;
   int? amount;
   String? code;
+  int? type;
   String? createdAt;
   String? updatedAt;
 
@@ -124,6 +125,7 @@ class Services {
         this.description,
         this.amount,
         this.code,
+        this.type,
         this.createdAt,
         this.updatedAt});
 
@@ -132,6 +134,7 @@ class Services {
     description = json['description'];
     amount = json['amount'];
     code = json['code'];
+    type = json['type'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -142,8 +145,10 @@ class Services {
     data['description'] = this.description;
     data['amount'] = this.amount;
     data['code'] = this.code;
+    data['type'] = this.type;
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     return data;
   }
 }
+

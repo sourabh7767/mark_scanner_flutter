@@ -38,7 +38,7 @@ class Data {
   String? cEmail;
   String? cAddress;
   String? cPhone;
-  Null? cFax;
+  String? cFax;
   String? vYear;
   String? vMake;
   String? vModal;
@@ -49,10 +49,10 @@ class Data {
   String? vMilege;
   int? isEmailSent;
   String? roNum;
-  Null? total;
+  String? total;
   int? status;
   String? createdAt;
-  Null? updatedAt;
+  String? updatedAt;
   List<Services>? services;
 
   Data(
@@ -121,32 +121,32 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['invoice_id'] = this.invoiceId;
-    data['shop_id'] = this.shopId;
-    data['shop_name'] = this.shopName;
-    data['shop_email'] = this.shopEmail;
-    data['shop_number'] = this.shopNumber;
-    data['c_name'] = this.cName;
-    data['c_email'] = this.cEmail;
-    data['c_address'] = this.cAddress;
-    data['c_phone'] = this.cPhone;
-    data['c_fax'] = this.cFax;
-    data['v_year'] = this.vYear;
-    data['v_make'] = this.vMake;
-    data['v_modal'] = this.vModal;
-    data['v_licno'] = this.vLicno;
-    data['v_vin'] = this.vVin;
-    data['v_color'] = this.vColor;
-    data['v_engine'] = this.vEngine;
-    data['v_milege'] = this.vMilege;
-    data['is_email_sent'] = this.isEmailSent;
-    data['Ro_num'] = this.roNum;
-    data['total'] = this.total;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = this.id ?? "";
+    data['user_id'] = this.userId ?? "";
+    data['invoice_id'] = this.invoiceId ?? "";
+    data['shop_id'] = this.shopId ?? "";
+    data['shop_name'] = this.shopName ?? "";
+    data['shop_email'] = this.shopEmail ?? "";
+    data['shop_number'] = this.shopNumber ?? "";
+    data['c_name'] = this.cName ?? "";
+    data['c_email'] = this.cEmail ?? "";
+    data['c_address'] = this.cAddress ?? "";
+    data['c_phone'] = this.cPhone ?? "";
+    data['c_fax'] = this.cFax ?? "";
+    data['v_year'] = this.vYear ?? "";
+    data['v_make'] = this.vMake ?? "";
+    data['v_modal'] = this.vModal ?? "";
+    data['v_licno'] = this.vLicno ?? "";
+    data['v_vin'] = this.vVin ?? "";
+    data['v_color'] = this.vColor ?? "";
+    data['v_engine'] = this.vEngine ?? "";
+    data['v_milege'] = this.vMilege ?? "";
+    data['is_email_sent'] = this.isEmailSent ?? "";
+    data['Ro_num'] = this.roNum ?? "";
+    data['total'] = this.total ?? "";
+    data['status'] = this.status ?? "";
+    data['created_at'] = this.createdAt ?? "";
+    data['updated_at'] = this.updatedAt ?? "";
     if (this.services != null) {
       data['services'] = this.services!.map((v) => v.toJson()).toList();
     }
@@ -163,8 +163,8 @@ class Services {
   String? code;
   int? type;
   int? serviceId;
-  Null? createdAt;
-  Null? updatedAt;
+  String? createdAt;
+  String? updatedAt;
 
   Services(
       {this.id,
@@ -193,16 +193,16 @@ class Services {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['invoice_id'] = this.invoiceId;
-    data['description'] = this.description;
-    data['amount'] = this.amount;
-    data['quantity'] = this.quantity;
-    data['code'] = this.code;
-    data['type'] = this.type;
-    data['service_id'] = this.serviceId;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = this.id ?? "";
+    data['invoice_id'] = this.invoiceId ?? "";
+    data['description'] = this.description ?? "";
+    data['amount'] = this.amount ?? "";
+    data['quantity'] = this.quantity ?? "";
+    data['code'] = this.code ?? "";
+    data['type'] = this.type ?? "";
+    data['service_id'] = this.serviceId ?? "";
+    data['created_at'] = this.createdAt ?? "";
+    data['updated_at'] = this.updatedAt ?? "";
     return data;
   }
 }

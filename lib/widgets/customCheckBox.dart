@@ -51,7 +51,7 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
       margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
       padding: EdgeInsets.symmetric(horizontal: 10,vertical: 1),
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color:widget.data!.type==1 ? Colors.grey.shade200 : AppColors.appColors.withOpacity(0.2),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
