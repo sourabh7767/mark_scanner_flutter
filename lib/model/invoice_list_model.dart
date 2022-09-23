@@ -122,31 +122,31 @@ class Data {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['user_id'] = this.userId;
-    data['invoice_id'] = this.invoiceId;
-    data['shop_id'] = this.shopId;
-    data['shop_name'] = this.shopName;
-    data['shop_email'] = this.shopEmail;
-    data['shop_number'] = this.shopNumber;
-    data['c_name'] = this.cName;
-    data['c_email'] = this.cEmail;
-    data['c_address'] = this.cAddress;
-    data['c_phone'] = this.cPhone;
-    data['c_fax'] = this.cFax;
-    data['v_year'] = this.vYear;
-    data['v_make'] = this.vMake;
-    data['v_modal'] = this.vModal;
-    data['v_licno'] = this.vLicno;
-    data['v_vin'] = this.vVin;
-    data['v_color'] = this.vColor;
-    data['v_engine'] = this.vEngine;
-    data['v_milege'] = this.vMilege;
-    data['is_email_sent'] = this.isEmailSent;
-    data['Ro_num'] = this.roNum;
-    data['status'] = this.status;
-    data['created_at'] = this.createdAt;
-    data['updated_at'] = this.updatedAt;
+    data['id'] = this.id ?? "";
+    data['user_id'] = this.userId ?? "";
+    data['invoice_id'] = this.invoiceId ?? "";
+    data['shop_id'] = this.shopId ?? "";
+    data['shop_name'] = this.shopName ?? "";
+    data['shop_email'] = this.shopEmail ?? "";
+    data['shop_number'] = this.shopNumber ?? "";
+    data['c_name'] = this.cName ?? "";
+    data['c_email'] = this.cEmail ?? "";
+    data['c_address'] = this.cAddress ?? "";
+    data['c_phone'] = this.cPhone ?? "";
+    data['c_fax'] = this.cFax ?? "";
+    data['v_year'] = this.vYear ?? "";
+    data['v_make'] = this.vMake ?? "";
+    data['v_modal'] = this.vModal ?? "";
+    data['v_licno'] = this.vLicno ?? "";
+    data['v_vin'] = this.vVin ?? "";
+    data['v_color'] = this.vColor ?? "";
+    data['v_engine'] = this.vEngine ?? "";
+    data['v_milege'] = this.vMilege ?? "";
+    data['is_email_sent'] = this.isEmailSent ?? "";
+    data['Ro_num'] = this.roNum ?? "";
+    data['status'] = this.status ?? "";
+    data['created_at'] = this.createdAt ?? "";
+    data['updated_at'] = this.updatedAt ?? "";
     if (this.services != null) {
       data['services'] = this.services!.map((v) => v.toJson()).toList();
     }
@@ -161,8 +161,8 @@ class Services {
   String? amount;
   int? quantity;
   String? code;
-  Null? createdAt;
-  Null? updatedAt;
+  String? createdAt;
+  String? updatedAt;
 
   Services(
       {this.id,
@@ -175,14 +175,14 @@ class Services {
         this.updatedAt});
 
   Services.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    invoiceId = json['invoice_id'];
-    description = json['description'];
-    amount = json['amount'];
-    quantity = json['quantity'];
-    code = json['code'];
-    createdAt = json['created_at'];
-    updatedAt = json['updated_at'];
+    id = json['id'] ?? "";
+    invoiceId = json['invoice_id'] ?? "";
+    description = json['description'] ?? "";
+    amount = json['amount'] ?? "";
+    quantity = json['quantity'] ?? "";
+    code = json['code'] ?? "";
+    createdAt = json['created_at'] ?? "";
+    updatedAt = json['updated_at'] ?? "";
   }
 
   Map<String, dynamic> toJson() {

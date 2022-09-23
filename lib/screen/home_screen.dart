@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
@@ -33,19 +35,21 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if(!(openMenu ?? false)) {
+        if (!(openMenu ?? false)) {
           Get.defaultDialog(
-              title: "Close Application",
-              middleText: ""
-              ,onCancel: (){
-            Get.back();
-          },
-              onConfirm: (){
-                 SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-                 }
-
-          );
-      }else{
+              title: "Are you sure to exit the App",
+              middleText: "",
+              buttonColor: AppColors.appColors,
+              cancelTextColor: AppColors.appColors,
+              titlePadding: EdgeInsets.all(10),
+              confirmTextColor: AppColors.white,
+              onCancel: () {
+                Get.back();
+              },
+              onConfirm: () {
+                SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+              });
+        } else {
           return true;
         }
         return true;
@@ -55,15 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
           backgroundColor: AppColors.appColors,
           title: Text(AppText.scannerApp),
         ),
-        onDrawerChanged: (v){
-          print("open :"+v.toString());
-          openMenu=v;
-          setState(() {
-
-          });
+        onDrawerChanged: (v) {
+          print("open :" + v.toString());
+          openMenu = v;
+          setState(() {});
         },
         drawer: Drawer(
-
           child: ListView(
             children: [
               UserAccountsDrawerHeader(
@@ -89,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   await Permission.camera.request();
                   bool permission = await Permission.camera.isGranted;
 
-                  if (!permission) {
+                  if (!permission && Platform.isAndroid) {
                     await openAppSettings();
                   } else {
                     String? code;
@@ -105,8 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         }
                       }
                       print('nothing return.' + (code ?? "").trim());
-                      print(
-                          'nothing return.' + code.toString().length.toString());
+                      print('nothing return.' +
+                          code.toString().length.toString());
                       Get.to(ServicesRequest(
                         code: code ?? "",
                       ));
@@ -127,8 +128,10 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               ListTile(
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PasswordChange()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PasswordChange()));
                   Get.off(PasswordChange());
                 },
                 leading: Icon(Icons.password),
@@ -188,11 +191,12 @@ class _HomeScreenState extends State<HomeScreen> {
                                 color: AppColors.white,
                                 boxShadow: [
                                   BoxShadow(
-                                      color: AppColors.appColors.withOpacity(0.1),
+                                      color:
+                                          AppColors.appColors.withOpacity(0.1),
                                       blurRadius: 8)
                                 ]),
-                            margin:
-                                EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 3),
                             child: Row(
                               children: [
                                 // Expanded(
@@ -230,7 +234,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            Text(data.data!.data![index].vModal!),
+                                            Text(data
+                                                .data!.data![index].vModal!),
                                           ],
                                         ),
                                         SizedBox(
@@ -243,7 +248,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.w600),
                                             ),
-                                            Text(data.data!.data![index].vYear!),
+                                            Text(
+                                                data.data!.data![index].vYear!),
                                           ],
                                         ),
                                       ],
@@ -254,23 +260,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                   children: [
                                     Container(
                                       child: Text(
-                                        data.data!.data![index].status == 1
+                                        data.data!.data![index].status != 1
                                             ? "Progress"
                                             : "Success",
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             fontSize: 18,
-                                            color:
-                                                data.data!.data![index].status ==
-                                                        1
-                                                    ? Colors.orangeAccent
-                                                    : Colors.green),
+                                            color: data.data!.data![index]
+                                                        .status !=
+                                                    1
+                                                ? Colors.orangeAccent
+                                                : Colors.green),
                                       ),
                                       height: 30,
-                                      padding: EdgeInsets.only(right: 10, top: 2),
+                                      padding:
+                                          EdgeInsets.only(right: 10, top: 2),
                                       alignment: Alignment.topCenter,
                                     ),
-                                    data.data!.data![index].status == 1
+                                    data.data!.data![index].status != 1
                                         ? InkWell(
                                             onTap: () {
                                               Get.to(ServicesRequest(
@@ -303,7 +310,7 @@ class _HomeScreenState extends State<HomeScreen> {
             await Permission.camera.request();
             bool permission = await Permission.camera.isGranted;
 
-            if (!permission) {
+            if (!permission && Platform.isAndroid) {
               await openAppSettings();
             } else {
               String? code;
@@ -329,8 +336,8 @@ class _HomeScreenState extends State<HomeScreen> {
             }
           },
           child: Container(
-            decoration:
-                BoxDecoration(shape: BoxShape.circle, color: AppColors.appColors),
+            decoration: BoxDecoration(
+                shape: BoxShape.circle, color: AppColors.appColors),
             padding: EdgeInsets.all(10),
             child: Icon(
               Icons.qr_code_scanner,
@@ -351,24 +358,12 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {});
     });
   }
+
   @override
   void dispose() {
     // TODO: implement dispose
-    if(!(openMenu ?? false)) {
-      Get.defaultDialog(
-        title: "Confirm Application Has been Closed"
-            ,onCancel: (){
-          Get.back();
-      },
-onConfirm: (){
-        // SystemChannels.platform.invokeMethod('SystemNavigator.pop');
-    super.dispose();  }
 
-      );
-
-
+    // SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+    super.dispose();
   }
-
-  }
-
 }

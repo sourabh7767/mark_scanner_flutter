@@ -1,17 +1,22 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:untitled/api/dio.dart';
 import 'package:untitled/model/service_form_model.dart';
 import 'package:untitled/screen/home_screen.dart';
+import 'package:untitled/screen/image_view.dart';
 import 'package:untitled/screen/service_request_controller.dart';
 import 'package:untitled/utils/app_color.dart';
 import 'package:untitled/utils/app_text.dart';
 import 'package:untitled/widgets/customCheckBox.dart';
 import 'package:untitled/widgets/custom_edit_text.dart';
 import 'package:get/get.dart';
+import 'package:untitled/widgets/custom_text.dart';
 import 'package:untitled/widgets/loader.dart';
-
+import 'package:dio/dio.dart' as dio;
 import '../model/code_data_model.dart';
 import '../model/form_data_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -20,6 +25,8 @@ import 'package:intl/intl.dart';
 import '../model/invoice_list_model.dart';
 import '../model/service_form_result_model.dart';
 import 'dart:math' as math;
+
+import '../utils/api_path.dart';
 
 class ServicesRequest extends StatefulWidget {
   String? id;
@@ -49,6 +56,9 @@ class _ServicesRequestState extends State<ServicesRequest> {
   bool? save;
   List<String> years = [];
   String? selectYear;
+  List<XFile>? images = [];
+  List<XFile>? cImages = [];
+  List<String>? oldImages = [];
   ServiceRequestController serviceRequestController =
       Get.put(ServiceRequestController());
 
@@ -92,6 +102,9 @@ class _ServicesRequestState extends State<ServicesRequest> {
           }
           selectYear = invoice!.data!.vYear;
         });
+  invoice!.data!.images!.forEach((element) {
+    oldImages!.add(element!.image!);
+  });
 
         print("Data=" + invoice!.data!.toJson().toString());
         yourName.text = invoice!.data!.cName ?? "";
@@ -159,6 +172,68 @@ class _ServicesRequestState extends State<ServicesRequest> {
               SizedBox(
                 height: 40,
               ),
+              Align(
+                alignment: Alignment.center,
+                child: Wrap(
+                  alignment: WrapAlignment.start,
+                  children: [
+                    for (String xfile in oldImages!)
+                    InkWell(
+                      onTap: () {
+                        Get.to(ImageView(url: ApiPath.ImageBasePath+xfile!,));
+                      },
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(color: Colors.black12),
+                        child: CachedNetworkImage(
+                          imageUrl: ApiPath.ImageBasePath+xfile!,
+                          progressIndicatorBuilder: (context, url, downloadProgress) =>
+                              Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                          errorWidget: (context, url, error) => Icon(Icons.error),
+                        ),
+                      ),
+                    ),
+                    for (XFile xfile in images!)
+                      InkWell(
+                        onTap: () {
+                          Get.to(ImageView(XFile: File(xfile.path)));
+                        },
+                        child: Container(
+                          height: 80,
+                          width: 80,
+                          margin: EdgeInsets.all(8),
+                          decoration: BoxDecoration(color: Colors.black12),
+                          child: Image.file(
+                            File(xfile.path),
+                            height: 80,
+                            width: 80,
+                          ),
+                        ),
+                      ),
+                    InkWell(
+                      onTap: () async {
+                        imagePicker();
+                        //    final ImagePicker _picker = ImagePicker();
+                        //
+                        // List<XFile>? imagecopy = await _picker.pickMultiImage();
+                        //  imagecopy?.forEach((element) {
+                        //    images!.add(element);
+                        //  });
+                        setState(() {});
+                      },
+                      child: Container(
+                        height: 80,
+                        width: 80,
+                        margin: EdgeInsets.all(8),
+                        decoration: BoxDecoration(color: Colors.black26),
+                        child: Icon(Icons.add),
+                      ),
+                    )
+                  ],
+                ),
+              ),
               Center(
                 child: Container(
                   width: double.infinity,
@@ -223,8 +298,9 @@ class _ServicesRequestState extends State<ServicesRequest> {
                       await serviceRequestController.LoadFormData(widget.code);
                       Make.text = getdata("Make")!.value ?? "";
                       modelYear.text = getdata("Model Year")!.value ?? "";
-                      if((getdata("Model Year")!.value ?? "")!=""){
-                      selectYear = getdata("Model Year")!.value ?? "";}else{
+                      if ((getdata("Model Year")!.value ?? "") != "") {
+                        selectYear = getdata("Model Year")!.value ?? "";
+                      } else {
                         Fluttertoast.showToast(msg: "VIN No is Wrong");
                       }
                       model.text = getdata("Model")!.value ?? "";
@@ -320,7 +396,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
                   children: [
                     TextButton(
                         onPressed: () {
-                          send("1");
+                          send("2");
                         },
                         style: ButtonStyle(
                             backgroundColor:
@@ -334,7 +410,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
                     Center(
                       child: TextButton(
                           onPressed: () {
-                            send("2");
+                            send("1");
                           },
                           style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all(
@@ -397,7 +473,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
     return false;
   }
 
-  send(status) {
+  send(status) async {
     if (serviceRequestController.shopDetails.value.id == "") {
       Fluttertoast.showToast(msg: "Select shopName");
     } else if (email.text == "") {
@@ -424,6 +500,12 @@ class _ServicesRequestState extends State<ServicesRequest> {
       Fluttertoast.showToast(msg: "Enter yourName");
     } else {
       ProgressDialog.show(context);
+      List<dio.MultipartFile>? mul=[];
+      for(XFile file in images! ){
+        print("file name"+ file.name);
+        dio.MultipartFile   multipartFile=await dio.MultipartFile.fromFile(file.path,filename: "images.jpg");
+      mul!.add(multipartFile);
+      }
       ServiceFormModel serviceFormModel = ServiceFormModel(
           id: widget.id ?? "",
           cName: yourName.text,
@@ -440,11 +522,12 @@ class _ServicesRequestState extends State<ServicesRequest> {
           shopId: serviceRequestController.shopDetails.value.id.toString(),
           status: status,
           vColor: color.text,
-          vEngine:"abc",
+          vEngine: "abc",
           vLicno: licNo.text,
           vMake: Make.text,
           vMilege: Mileage.text,
           vVin: VIN.text,
+          images: mul!,
           vYear: selectYear);
       ApiClient apiClient = ApiClient();
       apiClient.saveForm(serviceFormModel).then((value) {
@@ -454,5 +537,78 @@ class _ServicesRequestState extends State<ServicesRequest> {
             .then((value) => Fluttertoast.showToast(msg: "Success"));
       });
     }
+  }
+
+  imagePicker() {
+    Get.bottomSheet(Container(
+      height: Get.height * 0.3,
+      decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20), topRight: Radius.circular(20))),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          InkWell(
+            onTap: () async {
+              Get.back();
+              final ImagePicker _picker = ImagePicker();
+
+              XFile? imagecopy = await _picker.pickImage(source: ImageSource.camera,imageQuality: 25);
+
+                images!.add(imagecopy!);
+
+              setState(() {});
+            },
+            child: Container(
+              alignment: Alignment.center,
+              width: Get.width,
+              child: Text(
+                "Camera",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
+          Container(
+            width: Get.width,
+            height: 1,
+            color: Colors.black26,
+          ),
+          InkWell(
+              onTap: () async {
+                Get.back();
+                   final ImagePicker _picker = ImagePicker();
+
+                List<XFile>? imagecopy = await _picker.pickMultiImage();
+                 imagecopy?.forEach((element) {
+                   images!.add(element);
+                 });
+                setState(() {});
+              },
+              child: Container(
+                  alignment: Alignment.center,
+                  child: Text(
+                    "Gallery",
+                    style: TextStyle(color: Colors.black),
+                  ))),
+          Container(
+            width: Get.width,
+            height: 1,
+            color: Colors.black26,
+          ),
+          InkWell(
+              onTap: () {
+                Get.back();
+              },
+              child: Container(
+                alignment: Alignment.center,
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(color: Colors.black),
+                ),
+              ))
+        ],
+      ),
+    ));
   }
 }

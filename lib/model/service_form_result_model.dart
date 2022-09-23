@@ -54,6 +54,8 @@ class Data {
   String? createdAt;
   String? updatedAt;
   List<Services>? services;
+  List<Images>? images;
+
 
   Data(
       {this.id,
@@ -62,6 +64,7 @@ class Data {
         this.shopId,
         this.shopName,
         this.shopEmail,
+        this.images,
         this.shopNumber,
         this.cName,
         this.cEmail,
@@ -117,6 +120,12 @@ class Data {
         services!.add(new Services.fromJson(v));
       });
     }
+    if (json['images'] != null) {
+      images = <Images>[];
+      json['images'].forEach((v) {
+        images!.add(new Images.fromJson(v));
+      });
+    }
   }
 
   Map<String, dynamic> toJson() {
@@ -150,6 +159,10 @@ class Data {
     if (this.services != null) {
       data['services'] = this.services!.map((v) => v.toJson()).toList();
     }
+    if (this.images != null) {
+      data['images'] = this.images!.map((v) => v.toJson()).toList();
+    }
+
     return data;
   }
 }
@@ -203,6 +216,27 @@ class Services {
     data['service_id'] = this.serviceId ?? "";
     data['created_at'] = this.createdAt ?? "";
     data['updated_at'] = this.updatedAt ?? "";
+    return data;
+  }
+}
+class Images {
+  int? id;
+  int? invoiceId;
+  String? image;
+
+  Images({this.id, this.invoiceId, this.image});
+
+  Images.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    invoiceId = json['invoice_id'];
+    image = json['image'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['invoice_id'] = this.invoiceId;
+    data['image'] = this.image;
     return data;
   }
 }

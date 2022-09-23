@@ -1,3 +1,8 @@
+import 'package:untitled/api/dio.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:dio/dio.dart';
+
 class ServiceFormModel {
   String? cName;
   String? cEmail;
@@ -16,6 +21,7 @@ class ServiceFormModel {
   String? shopId;
   String? services;
   String? id;
+  List<MultipartFile>? images;
 
   ServiceFormModel(
       {this.cName,
@@ -34,6 +40,7 @@ class ServiceFormModel {
         this.status,
         this.shopId,
         this.services,
+        required this.images,
         this.id});
 
   ServiceFormModel.fromJson(Map<String, dynamic> json) {
@@ -53,6 +60,7 @@ class ServiceFormModel {
     status = json['status'];
     shopId = json['shop_id'];
     services = json['services'];
+    images = json['images[]'];
     id = json['id'];
   }
 
@@ -74,6 +82,9 @@ class ServiceFormModel {
     data['status'] = this.status;
     data['shop_id'] = this.shopId;
     data['services'] = this.services;
+
+    data['images[]'] = images;
+
     data['id'] = this.id;
     return data;
   }

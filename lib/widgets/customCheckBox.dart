@@ -1,4 +1,3 @@
-
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -16,7 +15,8 @@ class CustomCheckBox extends StatefulWidget {
   Services? data;
   dataModel.Services? editData;
 
-  CustomCheckBox({Key? key, required this.value, required this.data,this.editData})
+  CustomCheckBox(
+      {Key? key, required this.value, required this.data, this.editData})
       : super(key: key);
 
   @override
@@ -26,215 +26,292 @@ class CustomCheckBox extends StatefulWidget {
 class _CustomCheckBoxState extends State<CustomCheckBox> {
   ServiceRequestController serviceRequestController =
       Get.put(ServiceRequestController());
-  TextEditingController textEditingController = TextEditingController();
+  var textEditingController = TextEditingController().obs;
   int count = 1;
 
   @override
   void initState() {
-    textEditingController.text = widget.data!.amount.toString();
+    textEditingController.value.text = widget.data!.amount.toString();
     if (widget.value == true) {
-     serviceRequestController.servicesListModel.value.services!.add(ServicesData(
-
-       quantity: widget.editData!.quantity.toString() ?? "",
-       amount: widget.editData!.amount.toString() ?? "",
-       id: widget.editData!.serviceId.toString()
-     ));
-     textEditingController.text= widget.editData!.amount.toString();
-     count=widget.editData!.quantity ?? 1;
-     setState((){});
+      serviceRequestController.servicesListModel.value.services!.add(
+          ServicesData(
+              quantity: widget.editData!.quantity.toString() ?? "",
+              amount: widget.editData!.amount.toString() ?? "",
+              id: widget.editData!.serviceId.toString()));
+      textEditingController.value.text = widget.editData!.amount.toString();
+      count = widget.editData!.quantity ?? 1;
+    } else {
+      for (int i = 0;
+          i < serviceRequestController.servicesListModel.value.services!.length;
+          i++) {
+        if (serviceRequestController.servicesListModel.value.services![i].id
+                .toString() ==
+            widget.data!.id.toString()) {
+          widget.value = true;
+        }
+      }
     }
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      padding: EdgeInsets.symmetric(horizontal: 10,vertical: 1),
-      decoration: BoxDecoration(
-        color:widget.data!.type==1 ? Colors.grey.shade200 : AppColors.appColors.withOpacity(0.2),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
+    for (int i = 0;
+    i < serviceRequestController.servicesListModel.value.services!.length;
+    i++) {
+      if (serviceRequestController.servicesListModel.value.services![i].id
+          .toString() ==
+          widget.data!.id.toString()) {
+        widget.value = true;
+      }
+    }
+    print("Data" + serviceRequestController.servicesListModel.value.services!.length.toString());
+    return GetBuilder<ServiceRequestController>(builder: (context) {
+      return Container(
+        margin: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 1),
+        decoration: BoxDecoration(
+          color: widget.data!.type == 1
+              ? Colors.grey.shade200
+              : AppColors.appColors.withOpacity(0.2),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
                   width: Get.width * 0.7,
                   margin: EdgeInsets.only(left: 10),
-                  child: Text(widget.data!.description ?? "",style: TextStyle(
-                    fontWeight: FontWeight.w500
-                  ),),),
-              InkWell(
-                onTap: () {
-
-
-                },
-                child: Checkbox(
-                    value: widget.value!,
-                    fillColor: MaterialStateProperty.all(AppColors.appColors),
-
-                    onChanged: (v) {
-                      widget.value = !widget.value!;
-                      print("serviceRequestController "+widget.value!.toString());
-                      if(!widget.value!){
-                        for(int i=0;i<serviceRequestController.servicesListModel.value.services!.length;i++){
-                          if(serviceRequestController.servicesListModel.value.services![i].id.toString()==widget.data!.id.toString())
-                          {
-                            print("serviceRequestController "+serviceRequestController.servicesListModel.value.services![i].toString());
-
-                            serviceRequestController.servicesListModel.value.services!.removeAt(i);
-                          }
-                        }
-                      }else{
-
-                        serviceRequestController.servicesListModel.value.services?.add(ServicesData(
-                            id: widget.data!.id!.toString(),
-                            amount: textEditingController.text,
-                            quantity: count.toString()
-                        ));
-                        print("serviceRequestController "+json.encode(serviceRequestController.servicesListModel.value.services!.map((v) => v.toJson()).toList()).toString());
-                        print("serviceRequestController "+serviceRequestController.servicesListModel.value.toJson()["services"].toString());
-
-                      } setState((){});
-                    }),
-              )
-            ],
-          ),
-          // Container(
-          //   color: AppColors.white,
-          //   width: double.infinity,
-          //   height: 1,
-          // ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Text("Cost",style: TextStyle(
-                      fontSize: 12,fontWeight: FontWeight.w300
-                    ),),
+                  child: Text(
+                    widget.data!.description ?? "",
+                    style: TextStyle(fontWeight: FontWeight.w500),
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(10)
-                    ),
-                    padding: EdgeInsets.symmetric(horizontal: 20,vertical: 2),
-                    height: 30,
-                    width: 100,
-                    child: Theme(
-                      data: ThemeData(
-                          textSelectionHandleColor: Colors.transparent,
-                        textSelectionTheme: TextSelectionThemeData(
-                          selectionHandleColor: Colors.transparent
-                        ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: Checkbox(
+                      value: widget.value!,
+                      fillColor: MaterialStateProperty.all(AppColors.appColors),
+                      onChanged: (v) {
+                        widget.value = !widget.value!;
+                        print("serviceRequestController " +
+                            widget.value!.toString());
+                        if (!widget.value!) {
+                          for (int i = 0;
+                              i <
+                                  serviceRequestController
+                                      .servicesListModel.value.services!.length;
+                              i++) {
+                            if (serviceRequestController
+                                    .servicesListModel.value.services![i].id
+                                    .toString() ==
+                                widget.data!.id.toString()) {
+                              print("serviceRequestController " +
+                                  serviceRequestController
+                                      .servicesListModel.value.services![i]
+                                      .toString());
 
-                        ),
-                      child: TextField(
-                        controller: textEditingController, enableInteractiveSelection: true,
-
-                        onChanged: (v){
-                          for(int i=0;i<serviceRequestController.servicesListModel.value.services!.length;i++){
-                            if(serviceRequestController.servicesListModel.value.services![i].id.toString()==widget.data!.id.toString())
-                            {
-                              serviceRequestController.servicesListModel.value.services![i].amount=textEditingController.text.toString();
-                              print("serviceRequestController "+serviceRequestController.servicesListModel.value.services!.map((v) => v.toJson().toString()).toList().toString());
+                              serviceRequestController
+                                  .servicesListModel.value.services!
+                                  .removeAt(i);
                             }
                           }
-                         setState((){});
-                        },
-                        maxLength: 7,
-autofocus: false,
-                        cursorRadius: Radius.circular(20),
-                        keyboardType: TextInputType.number,
-                        decoration: InputDecoration(border: UnderlineInputBorder(),
-
-                        counterText: ""),
-                        textAlign: TextAlign.center,
+                        } else {
+                          serviceRequestController
+                              .servicesListModel.value.services
+                              ?.add(ServicesData(
+                                  id: widget.data!.id!.toString(),
+                                  amount: textEditingController.value.text,
+                                  quantity: count.toString()));
+                          print("serviceRequestController " +
+                              json
+                                  .encode(serviceRequestController
+                                      .servicesListModel.value.services!
+                                      .map((v) => v.toJson())
+                                      .toList())
+                                  .toString());
+                          print("serviceRequestController " +
+                              serviceRequestController.servicesListModel.value
+                                  .toJson()["services"]
+                                  .toString());
+                        }
+                        setState(() {});
+                      }),
+                )
+              ],
+            ),
+            // Container(
+            //   color: AppColors.white,
+            //   width: double.infinity,
+            //   height: 1,
+            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(3.0),
+                      child: Text(
+                        "Cost",
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w300),
                       ),
                     ),
-                  ),
-                ],
-              ),
-              // Container(
-              //   color: AppColors.white,
-              //   width: 1,
-              //   height: 20,
-              // ),
-              Column(
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.all(3.0),
-                    child: Text("Quantity",style: TextStyle(
-                        fontSize: 12,fontWeight: FontWeight.w300
-                    ),),
-                  ), Container(
+                    Container(
                       decoration: BoxDecoration(
                           color: AppColors.white,
-                          borderRadius: BorderRadius.circular(10)
+                          borderRadius: BorderRadius.circular(10)),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 2),
+                      height: 30,
+                      width: 100,
+                      child: Theme(
+                        data: ThemeData(
+                          textSelectionHandleColor: Colors.transparent,
+                          textSelectionTheme: TextSelectionThemeData(
+                              selectionHandleColor: Colors.transparent),
+                        ),
+                        child: TextField(
+                          controller: textEditingController.value,
+                          enableInteractiveSelection: true,
+                          onChanged: (v) {
+                            for (int i = 0;
+                                i <
+                                    serviceRequestController.servicesListModel
+                                        .value.services!.length;
+                                i++) {
+                              if (serviceRequestController
+                                      .servicesListModel.value.services![i].id
+                                      .toString() ==
+                                  widget.data!.id.toString()) {
+                                serviceRequestController.servicesListModel.value
+                                        .services![i].amount =
+                                    textEditingController.value.text.toString();
+                                print("serviceRequestController " +
+                                    serviceRequestController
+                                        .servicesListModel.value.services!
+                                        .map((v) => v.toJson().toString())
+                                        .toList()
+                                        .toString());
+                              }
+                            }
+                            setState(() {});
+                          },
+                          maxLength: 7,
+                          autofocus: false,
+                          cursorRadius: Radius.circular(20),
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                              border: UnderlineInputBorder(), counterText: ""),
+                          textAlign: TextAlign.center,
+                        ),
                       ),
-                      padding: EdgeInsets.all(1),
-                    child: Row(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            if (count > 0) {
-                              count--;
-                            }
-                            for(int i=0;i<serviceRequestController.servicesListModel.value.services!.length;i++){
-                              if(serviceRequestController.servicesListModel.value.services![i].id.toString()==widget.data!.id.toString())
-                              {
-                                serviceRequestController.servicesListModel.value.services![i].quantity=count.toString();
-                              }
-                            }
-                            setState(() {});
-                          },
-                          child: SizedBox(
-                            child: Icon(Icons.remove),
-                            height: 30,
-                            width: 30,
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          child: Text(count.toString()),
-                          height: 30,
-                          width: 30,
-                        ),
-                        InkWell(
-                          onTap: () {
-                            if (count < 99) {
-                              count++;
-                            }for(int i=0;i<serviceRequestController.servicesListModel.value.services!.length;i++){
-                              if(serviceRequestController.servicesListModel.value.services![i].id.toString()==widget.data!.id.toString())
-                              {
-                                serviceRequestController.servicesListModel.value.services![i].quantity=count.toString();
-                              }
-                            }
-                            setState(() {});
-                          },
-                          child: SizedBox(
-                            child: Icon(Icons.add),
-                            height: 30,
-                            width: 30,
-                          ),
-                        ),
-                      ],
                     ),
-                  ),
-                ],
-              ),
-              SizedBox()
-            ],
-          ),
-          SizedBox(
-            height: 13,
-          )
-        ],
-      ),
-    );
+                  ],
+                ),
+                // Container(
+                //   color: AppColors.white,
+                //   width: 1,
+                //   height: 20,
+                // ),
+                Column(
+                  children: [
+                    const Padding(
+                      padding: EdgeInsets.all(3.0),
+                      child: Text(
+                        "Quantity",
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w300),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                          color: AppColors.white,
+                          borderRadius: BorderRadius.circular(10)),
+                      padding: EdgeInsets.all(1),
+                      child: Row(
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              if (count > 0) {
+                                count--;
+                              }
+                              for (int i = 0;
+                                  i <
+                                      serviceRequestController.servicesListModel
+                                          .value.services!.length;
+                                  i++) {
+                                if (serviceRequestController
+                                        .servicesListModel.value.services![i].id
+                                        .toString() ==
+                                    widget.data!.id.toString()) {
+                                  serviceRequestController
+                                      .servicesListModel
+                                      .value
+                                      .services![i]
+                                      .quantity = count.toString();
+                                }
+                              }
+                              setState(() {});
+                            },
+                            child: SizedBox(
+                              child: Icon(Icons.remove),
+                              height: 30,
+                              width: 30,
+                            ),
+                          ),
+                          Container(
+                            alignment: Alignment.center,
+                            child: Text(count.toString()),
+                            height: 30,
+                            width: 30,
+                          ),
+                          InkWell(
+                            onTap: () {
+                              if (count < 99) {
+                                count++;
+                              }
+                              for (int i = 0;
+                                  i <
+                                      serviceRequestController.servicesListModel
+                                          .value.services!.length;
+                                  i++) {
+                                if (serviceRequestController
+                                        .servicesListModel.value.services![i].id
+                                        .toString() ==
+                                    widget.data!.id.toString()) {
+                                  serviceRequestController
+                                      .servicesListModel
+                                      .value
+                                      .services![i]
+                                      .quantity = count.toString();
+                                }
+                              }
+                              setState(() {});
+                            },
+                            child: SizedBox(
+                              child: Icon(Icons.add),
+                              height: 30,
+                              width: 30,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox()
+              ],
+            ),
+            SizedBox(
+              height: 13,
+            )
+          ],
+        ),
+      );
+    });
   }
 }

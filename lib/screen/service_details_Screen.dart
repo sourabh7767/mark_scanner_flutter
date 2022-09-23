@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:untitled/api/dio.dart';
 import 'package:untitled/model/invoice_list_model.dart';
+import 'package:untitled/utils/api_path.dart';
 import 'package:untitled/utils/app_color.dart';
 import 'package:untitled/utils/app_images.dart';
 import 'package:untitled/utils/app_text.dart';
@@ -10,6 +14,9 @@ import 'package:untitled/widgets/custom_text.dart';
 import '../model/form_data_model.dart';
 import '../model/service_form_result_model.dart';
 import 'package:intl/intl.dart';
+import 'package:get/get.dart';
+
+import 'image_view.dart';
 
 class ServiceDetailScreen extends StatefulWidget {
   String? id;
@@ -56,6 +63,29 @@ String? name;
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                      Align(
+                      alignment: Alignment.center,
+                      child: Wrap(
+                        alignment: WrapAlignment.start,
+                        children: [
+                          for (Images xfile in snapshot.data!.data!.images!)
+                            InkWell(
+                              onTap: () {
+                                 Get.to(ImageView(url: ApiPath.ImageBasePath+xfile.image!,));
+                              },
+                              child: Container(
+                                height: 80,
+                                width: 80,
+                                margin: EdgeInsets.all(8),
+                                decoration: BoxDecoration(color: Colors.black12),
+                                child: CachedNetworkImage(
+                                  imageUrl: ApiPath.ImageBasePath+xfile.image!,
+                                  progressIndicatorBuilder: (context, url, downloadProgress) =>
+                                      Center(child: CircularProgressIndicator(value: downloadProgress.progress)),
+                                  errorWidget: (context, url, error) => Icon(Icons.error),
+                                ),
+                              ),
+                            ),]),),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -307,15 +337,14 @@ String? name;
                                 ),  Expanded(
                                   flex: 1,
                                   child: Text(
-                                      (snapshot.data!.data!.services![index].type==1)? snapshot.data!.data!.services![index].amount.toString():"",
+                                      (snapshot.data!.data!.services![index].type==1)? (String.fromCharCodes(new Runes('\u0024'))+snapshot.data!.data!.services![index].amount.toString()):"",
                                     textAlign: TextAlign.center,
 
                                     style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
                                   ),
                                 ), Expanded(
                                   flex: 1,
-                                  child: Text(
-                                    (snapshot.data!.data!.services![index].type==2)? snapshot.data!.data!.services![index].amount.toString():"",
+                                  child:   Text(snapshot.data!.data!.services![index].type==2?(String.fromCharCodes(new Runes('\u0024'))+(snapshot.data!.data!.services![index].amount.toString())):"",
                                     textAlign: TextAlign.center,
 
                                     style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
@@ -330,7 +359,7 @@ String? name;
                                 ),  Expanded(
                                   flex: 1,
                                   child: Text(
-                                    snapshot.data!.data!.services![index].amount.toString(),
+                                    (String.fromCharCodes(new Runes('\u0024'))+snapshot.data!.data!.services![index].amount.toString()),
                                     textAlign: TextAlign.center,
 
                                     style: TextStyle(fontSize: 15,fontWeight: FontWeight.w500),
@@ -345,7 +374,7 @@ String? name;
                           alignment: Alignment.centerRight,
                           child: CustomText(
                             title: "Amount",
-                            text: total(snapshot.data!),
+                            text: (String.fromCharCodes(Runes('\u0024'))+total(snapshot.data!)),
                           ),
                         ),
                         Padding(
