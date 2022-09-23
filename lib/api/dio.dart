@@ -41,10 +41,11 @@ class ApiClient {
         LocalStorage.SetString(LocalStorage.auth, userModel.data!.authToken!);
         LocalStorage.SetString(LocalStorage.email, userModel.data!.email!);
         LocalStorage.SetString(LocalStorage.name, userModel.data!.fullName!);
+
         return true;
       }
     } catch (e) {
-      Fluttertoast.showToast(msg: "Error-- " + e.toString());
+      Fluttertoast.showToast(msg: "Something is wrong");
       return false;
     }
     return false;
