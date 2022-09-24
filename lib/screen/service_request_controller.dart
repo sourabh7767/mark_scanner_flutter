@@ -4,6 +4,7 @@ import 'package:untitled/model/form_data_model.dart';
 import 'package:get/get.dart';
 
 import '../model/ServicesListModel.dart';
+import '../model/service_form_result_model.dart';
 
 class ServiceRequestController extends GetxController{
   Rx<FormDataModel> formDataModel = FormDataModel().obs;
@@ -11,6 +12,7 @@ class ServiceRequestController extends GetxController{
   Rx<ShopDetails> shopDetails = ShopDetails().obs;
   Rx<CodeDataModel> codeData = CodeDataModel().obs;
   Rx<ServicesListModel> servicesListModel=ServicesListModel(services: []).obs;
+  Rx<ServiceFormResultModel> invoice=ServiceFormResultModel().obs;
 
   LoadData() async {
     ApiClient apiClient = ApiClient();

@@ -17,12 +17,12 @@ import 'package:get/get.dart';
 import 'package:untitled/widgets/custom_text.dart';
 import 'package:untitled/widgets/loader.dart';
 import 'package:dio/dio.dart' as dio;
+import '../model/ServicesListModel.dart';
 import '../model/code_data_model.dart';
 import '../model/form_data_model.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 
-import '../model/invoice_list_model.dart';
 import '../model/service_form_result_model.dart';
 import 'dart:math' as math;
 
@@ -39,26 +39,27 @@ class ServicesRequest extends StatefulWidget {
 }
 
 class _ServicesRequestState extends State<ServicesRequest> {
-  TextEditingController shopName = TextEditingController();
-  TextEditingController yourName = TextEditingController();
-  TextEditingController email = TextEditingController();
-  TextEditingController phoneNO = TextEditingController();
-  TextEditingController modelYear = TextEditingController();
-  TextEditingController model = TextEditingController();
-  TextEditingController color = TextEditingController();
-  TextEditingController Make = TextEditingController();
-  TextEditingController VIN = TextEditingController();
-  TextEditingController licNo = TextEditingController();
-  TextEditingController ro_po = TextEditingController();
-  TextEditingController address = TextEditingController();
-  TextEditingController Mileage = TextEditingController();
-  TextEditingController amount = TextEditingController();
-  bool? save;
-  List<String> years = [];
-  String? selectYear;
-  List<XFile>? images = [];
-  List<XFile>? cImages = [];
-  List<String>? oldImages = [];
+  var shopName = TextEditingController().obs;
+  var yourName = TextEditingController().obs;
+  var email = TextEditingController().obs;
+  var phoneNO = TextEditingController().obs;
+  var modelYear = TextEditingController().obs;
+  var model = TextEditingController().obs;
+  var color = TextEditingController().obs;
+  var Make = TextEditingController().obs;
+  var VIN = TextEditingController().obs;
+  var licNo = TextEditingController().obs;
+  var ro_po = TextEditingController().obs;
+  var address = TextEditingController().obs;
+  var Mileage = TextEditingController().obs;
+  var amount = TextEditingController().obs;
+  RxBool save=false.obs;
+  RxList<String> years = <String>[].obs;
+  RxString selectYear="".obs;
+  RxList<XFile>? images = <XFile>[].obs;
+  RxList<XFile>? cImages = <XFile>[].obs;
+  RxList<String>? oldImages = <String>[].obs;
+  List<bool> checkList=[];
   ServiceRequestController serviceRequestController =
       Get.put(ServiceRequestController());
 
@@ -72,53 +73,52 @@ class _ServicesRequestState extends State<ServicesRequest> {
     return null;
   }
 
-  ServiceFormResultModel? invoice;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       if ((widget.code ?? "") != "") {
         await serviceRequestController.LoadFormData(widget.code);
-        Make.text = getdata("Make")!.value ?? "";
-        modelYear.text = getdata("Model Year")!.value ?? "";
-        model.text = getdata("Model")!.value ?? "";
-        VIN.text = widget.code ?? "";
+        Make.value.text = getdata("Make")!.value ?? "";
+        modelYear.value.text = getdata("Model Year")!.value ?? "";
+        model.value.text = getdata("Model")!.value ?? "";
+        VIN.value.text = widget.code ?? "";
       }
       await serviceRequestController.LoadData();
       if ((widget.id ?? "") != "") {
         ApiClient apiClient = ApiClient();
-        invoice = await apiClient.invoice(widget.id!);
-        print("data-=" + invoice!.data!.toJson().toString());
+        serviceRequestController.invoice.value = (await apiClient.invoice(widget.id!))!;
+        print("data-=" + serviceRequestController.invoice.value.data!.toJson().toString());
         serviceRequestController.formDataModel.value.data!.shopDetails!
             .forEach((element) {
           print("data ---------" +
               element.id.toString() +
               "/" +
-              invoice!.data!.shopId.toString());
-          if (element.id.toString() == invoice!.data!.shopId.toString()) {
+              serviceRequestController.invoice.value.data!.shopId.toString());
+          if (element.id.toString() == serviceRequestController.invoice.value.data!.shopId.toString()) {
             serviceRequestController.shopDetails.value = element;
-            email.text = serviceRequestController.shopDetails.value.email!;
-            phoneNO.text = serviceRequestController.shopDetails.value.number!;
+            email.value.text = serviceRequestController.shopDetails.value.email!;
+            phoneNO.value.text = serviceRequestController.shopDetails.value.number!;
           }
-          selectYear = invoice!.data!.vYear;
+          selectYear.value = serviceRequestController.invoice.value.data!.vYear!;
         });
-  invoice!.data!.images!.forEach((element) {
+  serviceRequestController.invoice.value.data!.images!.forEach((element) {
     oldImages!.add(element!.image!);
   });
 
-        print("Data=" + invoice!.data!.toJson().toString());
-        yourName.text = invoice!.data!.cName ?? "";
-        modelYear.text = invoice!.data!.vYear ?? "";
-        model.text = invoice!.data!.vModal ?? "";
-        color.text = invoice!.data!.vColor ?? "";
-        address.text = invoice!.data!.cAddress ?? "";
-        Make.text = invoice!.data!.vMake ?? "";
-        VIN.text = invoice!.data!.vVin ?? "";
-        licNo.text = invoice!.data!.vLicno ?? "";
-        ro_po.text = invoice!.data!.roNum ?? "";
-        // Engine.text = invoice!.data!.vEngine ?? "";
-        Mileage.text = invoice!.data!.vMilege ?? "";
-        setState(() {});
+        print("Data=" + serviceRequestController.invoice.value.data!.toJson().toString());
+        yourName.value.text = serviceRequestController.invoice.value.data!.cName ?? "";
+        modelYear.value.text = serviceRequestController.invoice.value.data!.vYear ?? "";
+        model.value.text = serviceRequestController.invoice.value.data!.vModal ?? "";
+        color.value.text = serviceRequestController.invoice.value.data!.vColor ?? "";
+        address.value.text = serviceRequestController.invoice.value.data!.cAddress ?? "";
+        Make.value.text = serviceRequestController.invoice.value.data!.vMake ?? "";
+        VIN.value.text = serviceRequestController.invoice.value.data!.vVin ?? "";
+        licNo.value.text = serviceRequestController.invoice.value.data!.vLicno ?? "";
+        ro_po.value.text = serviceRequestController.invoice.value.data!.roNum ?? "";
+        // Engine.value.text = serviceRequestController.invoice.value.data!.vEngine ?? "";
+        Mileage.value.text = serviceRequestController.invoice.value.data!.vMilege ?? "";
+    
       }
       DateTime now = DateTime.now();
       DateFormat formatter = DateFormat('yyyy');
@@ -126,26 +126,31 @@ class _ServicesRequestState extends State<ServicesRequest> {
       // years.add("Select Year");
 
       int count = 0;
+      for(int i=0;i<serviceRequestController
+          .formDataModel.value.data!.services!.length;i++){
+        checkList.add(check(i) ?? false);
+      }
       for (int i = 1950; i <= int.parse(formatted); i++) {
         years.add(i.toString());
         count++;
         if ((widget.id ?? "") != "") {
-          if (invoice!.data!.vYear == i.toString()) {
-            selectYear = i.toString();
+          if (serviceRequestController.invoice.value.data!.vYear == i.toString()) {
+            selectYear..value = i.toString();
           }
         }
         if ((widget.code ?? "") != "") {
           if (i.toString() == (getdata("Model Year")!.value ?? "").toString()) {
-            selectYear = i.toString();
+            selectYear.value = i.toString();
           }
         }
       }
-      if ((selectYear ?? "") == "") {
-        selectYear = years[years.length - 1];
+      if ((selectYear.value ?? "") == "") {
+        selectYear.value = years[years.length - 1];
       }
+
     });
 
-    setState(() {});
+
   }
 
   @override
@@ -221,7 +226,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
                         //  imagecopy?.forEach((element) {
                         //    images!.add(element);
                         //  });
-                        setState(() {});
+                       
                       },
                       child: Container(
                         height: 80,
@@ -264,51 +269,50 @@ class _ServicesRequestState extends State<ServicesRequest> {
                           serviceRequestController.shopDetails.value
                               .toJson()
                               .toString());
-                      email.text =
+                      email.value.text =
                           serviceRequestController.shopDetails.value.email!;
-                      phoneNO.text =
+                      phoneNO.value.text =
                           serviceRequestController.shopDetails.value.number!;
-                      address.text =
+                      address.value.text =
                           serviceRequestController.shopDetails.value.address!;
                     },
                   ),
                 ),
               ),
               CustomTextField(
-                  textEditingController: yourName, hint: AppText.writersName),
+                  textEditingController: yourName.value , hint: AppText.writersName),
               CustomTextField(
-                  textEditingController: email, hint: AppText.email),
+                  textEditingController: email.value , hint: AppText.email),
               CustomTextField(
-                  textEditingController: phoneNO,
+                  textEditingController: phoneNO.value,
                   hint: AppText.phoneNO,
                   textType: TextInputType.number),
               CustomTextField(
-                textEditingController: address,
+                textEditingController: address.value,
                 hint: "Address",
               ),
               CustomTextField(
-                textEditingController: VIN,
+                textEditingController: VIN.value,
                 hint: AppText.VIN,
                 Capital: true,
                 suffixIcon: InkWell(
                   onTap: () async {
                     ProgressDialog.show(context);
-                    widget.code = VIN.text;
+                    widget.code = VIN.value.text;
                     if ((widget.code ?? "") != "") {
                       await serviceRequestController.LoadFormData(widget.code);
-                      Make.text = getdata("Make")!.value ?? "";
-                      modelYear.text = getdata("Model Year")!.value ?? "";
+                      Make.value.text = getdata("Make")!.value ?? "";
+                      modelYear.value.text = getdata("Model Year")!.value ?? "";
                       if ((getdata("Model Year")!.value ?? "") != "") {
-                        selectYear = getdata("Model Year")!.value ?? "";
+                        selectYear.value = getdata("Model Year")!.value ?? "";
                       } else {
                         Fluttertoast.showToast(msg: "VIN No is Wrong");
                       }
-                      model.text = getdata("Model")!.value ?? "";
-                      // Engine.text =
+                      model.value.text = getdata("Model")!.value ?? "";
+                      // Engine.value.text =
                       //     getdata("Engine Number of Cylinders")!.value ?? "";
-                      VIN.text = widget.code ?? "";
+                      VIN.value.text = widget.code ?? "";
                     }
-                    setState(() {});
                     ProgressDialog.hide();
                   },
                   child: Transform.rotate(
@@ -338,27 +342,26 @@ class _ServicesRequestState extends State<ServicesRequest> {
                               margin: EdgeInsets.symmetric(horizontal: 5),
                               child: Text(e)));
                     }).toList(),
-                    value: selectYear,
+                    value: selectYear.value,
                     borderRadius: BorderRadius.circular(10),
                     onChanged: (String? v1) {
-                      selectYear = v1!;
-                      setState(() {});
+                      selectYear.value = v1!;
                     },
                   ),
                 ),
               ),
-              CustomTextField(textEditingController: Make, hint: "Make"),
-              CustomTextField(textEditingController: model, hint: "Model"),
-              CustomTextField(textEditingController: color, hint: "Color"),
-              // CustomTextField(textEditingController: Engine, hint: "Engine"),
-              CustomTextField(textEditingController: licNo, hint: "Lic No"),
-              CustomTextField(textEditingController: Mileage, hint: "Mileage"),
+              CustomTextField(textEditingController: Make.value , hint: "Make"),
+              CustomTextField(textEditingController: model.value , hint: "Model"),
+              CustomTextField(textEditingController: color.value , hint: "Color"),
+              // CustomTextField(textEditingController: Engine.value , hint: "Engine"),
+              CustomTextField(textEditingController: licNo.value , hint: "Lic No"),
+              CustomTextField(textEditingController: Mileage.value , hint: "Mileage"),
               CustomTextField(
-                  textEditingController: ro_po, hint: AppText.ro_po),
+                  textEditingController: ro_po.value , hint: AppText.ro_po),
               // CustomTextField(
-              //     textEditingController: amount, hint: AppText.amount),
+              //     textEditingController: amount.value , hint: AppText.amount),
               // CustomTextField(
-              //     textEditingController: other, hint: AppText.other),
+              //     textEditingController: other.value , hint: AppText.other),
               // CustomTextField(
               //     textEditingController: anyOtherInformation,
               //     hint: AppText.anyOtherInformation),
@@ -383,7 +386,7 @@ class _ServicesRequestState extends State<ServicesRequest> {
                     return CustomCheckBox(
                         data: serviceRequestController
                             .formDataModel.value.data!.services![index],
-                        value: check(index),
+                        value: checkList[index],
                         editData: gatdata(index));
                   }),
 
@@ -436,9 +439,9 @@ class _ServicesRequestState extends State<ServicesRequest> {
   }
 
   gatdata(index) {
-    if ((invoice ?? "") != "") {
+    if ((serviceRequestController.invoice.value.data ?? "") != "") {
       var value;
-      invoice!.data!.services!.forEach((element) {
+      serviceRequestController.invoice.value.data!.services!.forEach((element) {
         if (element.serviceId.toString() ==
             serviceRequestController
                 .formDataModel.value.data!.services![index].id
@@ -452,9 +455,9 @@ class _ServicesRequestState extends State<ServicesRequest> {
   }
 
   bool? check(index) {
-    if ((invoice ?? "") != "") {
+    if ((serviceRequestController.invoice.value.data ?? "") != "") {
       bool? value;
-      invoice!.data!.services!.forEach((element) {
+      serviceRequestController.invoice.value.data!.services!.forEach((element) {
         print("check --" +
             element.serviceId.toString() +
             "  -  " +
@@ -465,7 +468,22 @@ class _ServicesRequestState extends State<ServicesRequest> {
             serviceRequestController
                 .formDataModel.value.data!.services![index].id
                 .toString()) {
-          value = true;
+          for (int i = 0;
+          i < serviceRequestController.servicesListModel.value.services!.length;
+          i++) {
+            if (serviceRequestController.servicesListModel.value.services![i].id
+                .toString() ==
+               element.id.toString()) {
+
+            }
+          }
+          serviceRequestController.servicesListModel.value.services!.add(
+              ServicesData(
+                  quantity: element.quantity.toString() ?? "",
+                  amount: element.amount.toString() ?? "",
+                  id: element.serviceId.toString())
+
+          );
         }
       });
       return value ?? false;
@@ -476,27 +494,27 @@ class _ServicesRequestState extends State<ServicesRequest> {
   send(status) async {
     if (serviceRequestController.shopDetails.value.id == "") {
       Fluttertoast.showToast(msg: "Select shopName");
-    } else if (email.text == "") {
+    } else if (email.value.text == "") {
       Fluttertoast.showToast(msg: "Enter email ");
-    } else if (phoneNO.text == "") {
+    } else if (phoneNO.value.text == "") {
       Fluttertoast.showToast(msg: "Enter phoneNO ");
-    } else if (model.text == "") {
+    } else if (model.value.text == "") {
       Fluttertoast.showToast(msg: "Enter model ");
-    } else if (color.text == "") {
+    } else if (color.value.text == "") {
       Fluttertoast.showToast(msg: "Enter color ");
-    } else if (Make.text == "") {
+    } else if (Make.value.text == "") {
       Fluttertoast.showToast(msg: "Enter Make ");
-    } else if (VIN.text == "") {
+    } else if (VIN.value.text == "") {
       Fluttertoast.showToast(msg: "Enter VIN ");
-    } else if (licNo.text == "") {
+    } else if (licNo.value.text == "") {
       Fluttertoast.showToast(msg: "Enter licNo ");
-    } else if (ro_po.text == "") {
+    } else if (ro_po.value.text == "") {
       Fluttertoast.showToast(msg: "Enter ro_po ");
-    } else if (Mileage.text == "") {
+    } else if (Mileage.value.text == "") {
       Fluttertoast.showToast(msg: "Enter Mileage");
-    } else if (yourName.text == "") {
+    } else if (yourName.value.text == "") {
       Fluttertoast.showToast(msg: "Enter yourName");
-    } else if (selectYear!.length > 4) {
+    } else if (selectYear.value!.length > 4) {
       Fluttertoast.showToast(msg: "Enter yourName");
     } else {
       ProgressDialog.show(context);
@@ -508,27 +526,27 @@ class _ServicesRequestState extends State<ServicesRequest> {
       }
       ServiceFormModel serviceFormModel = ServiceFormModel(
           id: widget.id ?? "",
-          cName: yourName.text,
-          cAddress: address.text,
-          cEmail: email.text,
-          cPhone: phoneNO.text,
+          cName: yourName.value.text,
+          cAddress: address.value.text,
+          cEmail: email.value.text,
+          cPhone: phoneNO.value.text,
           services: json
               .encode(serviceRequestController.servicesListModel.value.services!
                   .map((v) => v.toJson())
                   .toList())
               .toString(),
-          Ro_num: ro_po.text,
-          v_modal: model.text,
+          Ro_num: ro_po.value.text,
+          v_modal: model.value.text,
           shopId: serviceRequestController.shopDetails.value.id.toString(),
           status: status,
-          vColor: color.text,
+          vColor: color.value.text,
           vEngine: "abc",
-          vLicno: licNo.text,
-          vMake: Make.text,
-          vMilege: Mileage.text,
-          vVin: VIN.text,
+          vLicno: licNo.value.text,
+          vMake: Make.value.text,
+          vMilege: Mileage.value.text,
+          vVin: VIN.value.text,
           images: mul!,
-          vYear: selectYear);
+          vYear: selectYear.value);
       ApiClient apiClient = ApiClient();
       apiClient.saveForm(serviceFormModel).then((value) {
         ProgressDialog.hide();
@@ -558,7 +576,6 @@ class _ServicesRequestState extends State<ServicesRequest> {
 
                 images!.add(imagecopy!);
 
-              setState(() {});
             },
             child: Container(
               alignment: Alignment.center,
@@ -583,7 +600,6 @@ class _ServicesRequestState extends State<ServicesRequest> {
                  imagecopy?.forEach((element) {
                    images!.add(element);
                  });
-                setState(() {});
               },
               child: Container(
                   alignment: Alignment.center,

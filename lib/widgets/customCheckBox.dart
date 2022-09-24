@@ -33,25 +33,20 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
   void initState() {
     textEditingController.value.text = widget.data!.amount.toString();
     if (widget.value == true) {
-      serviceRequestController.servicesListModel.value.services!.add(
-          ServicesData(
-              quantity: widget.editData!.quantity.toString() ?? "",
-              amount: widget.editData!.amount.toString() ?? "",
-              id: widget.editData!.serviceId.toString()));
-      textEditingController.value.text = widget.editData!.amount.toString();
+
       count = widget.editData!.quantity ?? 1;
     } else {
       for (int i = 0;
-          i < serviceRequestController.servicesListModel.value.services!.length;
-          i++) {
+      i < serviceRequestController.servicesListModel.value.services!.length;
+      i++) {
         if (serviceRequestController.servicesListModel.value.services![i].id
-                .toString() ==
+            .toString() ==
             widget.data!.id.toString()) {
           widget.value = true;
         }
       }
+
     }
-    setState(() {});
   }
 
   @override
