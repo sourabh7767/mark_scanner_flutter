@@ -13,7 +13,7 @@ class ServiceRequestController extends GetxController{
   Rx<CodeDataModel> codeData = CodeDataModel().obs;
   Rx<ServicesListModel> servicesListModel=ServicesListModel(services: []).obs;
   Rx<ServiceFormResultModel> invoice=ServiceFormResultModel().obs;
-
+RxInt count=1.obs;
   LoadData() async {
     ApiClient apiClient = ApiClient();
     var data = ShopDetails(

@@ -177,6 +177,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: Text("Something is Wrong"),
                     );
                   }
+                  if (data.connectionState == ConnectionState.done &&
+                      data.data!.data!.length  == 0) {
+                    return  Center(
+                      child: Text("No Record Found",style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25
+                      ),),
+                    );
+                  }
                   return ListView.builder(
                       itemCount: data.data!.data!.length,
                       itemBuilder: (context, index) {

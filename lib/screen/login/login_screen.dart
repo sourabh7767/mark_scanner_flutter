@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:untitled/api/dio.dart';
 import 'package:untitled/screen/home_screen.dart';
+import 'package:untitled/screen/privacyPolicy.dart';
 import 'package:untitled/utils/app_color.dart';
 import 'package:untitled/utils/app_images.dart';
 
@@ -186,7 +187,15 @@ keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 SizedBox(
                   height: Get.height * 0.04,
                 ),
-                SizedBox(height: Get.height * 0.01),
+                SizedBox(height: Get.height * 0.08),
+                InkWell(
+                    onTap: (){
+                      Get.to(PrivacyPolicy());
+                    },
+                    child: Text("Privacy Policy",style: const TextStyle(
+                      fontSize: 15,fontWeight: FontWeight.bold,
+                      color: AppColors.appColors
+                    ),)),
                 SizedBox(
                   height: Get.height * 0.2,
                 ),

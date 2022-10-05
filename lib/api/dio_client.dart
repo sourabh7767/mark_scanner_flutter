@@ -56,7 +56,7 @@ class LoggingInterceptor extends Interceptor {
 
     } else {
 
-      print("D"+response.data);
+      print("D"+response.data.toString());
 
     }
 

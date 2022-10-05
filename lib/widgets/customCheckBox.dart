@@ -31,10 +31,12 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
     textEditingController.value.text = widget.data!.amount.toString();
     if (widget.value == true) {
 
       count = widget.editData!.quantity ?? 1;
+      textEditingController.value.text =widget.editData!.amount ?? widget.data!.amount.toString();
     } else {
       for (int i = 0;
       i < serviceRequestController.servicesListModel.value.services!.length;
@@ -45,10 +47,21 @@ class _CustomCheckBoxState extends State<CustomCheckBox> {
           widget.value = true;
         }
       }
-
     }
-  }
+    setState(() {
 
+    });
+    });
+
+
+
+  }
+@override
+  void setState(VoidCallback fn) {
+    // TODO: implement setState
+  if(mounted){
+  super.setState(fn);}
+  }
   @override
   Widget build(BuildContext context) {
     for (int i = 0;
