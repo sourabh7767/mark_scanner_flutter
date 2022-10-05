@@ -29,12 +29,12 @@ class Data {
   int? id;
   String? fullName;
   String? email;
-  Null? profileImage;
+  var profileImage;
   int? role;
   int? status;
   Null? emailVerificationOtp;
   int? notification;
-  Null? emailNotification;
+  var emailNotification;
   String? emailVerifiedAt;
   String? createdAt;
   String? updatedAt;

@@ -62,13 +62,37 @@ class ShopDetails {
   int? id;
   String? name;
   String? email;
+  String? dialCode;
+  String? iso;
+  String? number;
+  String? address;
+  String? fax;
+  String? createdAt;
+  String? updatedAt;
 
-  ShopDetails({this.id, this.name, this.email});
+  ShopDetails(
+      {this.id,
+        this.name,
+        this.email,
+        this.dialCode,
+        this.iso,
+        this.number,
+        this.address,
+        this.fax,
+        this.createdAt,
+        this.updatedAt});
 
   ShopDetails.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     name = json['name'];
     email = json['email'];
+    dialCode = json['dial_code'];
+    iso = json['iso'];
+    number = json['number'];
+    address = json['address'];
+    fax = json['fax'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -76,25 +100,55 @@ class ShopDetails {
     data['id'] = this.id;
     data['name'] = this.name;
     data['email'] = this.email;
+    data['dial_code'] = this.dialCode;
+    data['iso'] = this.iso;
+    data['number'] = this.number;
+    data['address'] = this.address;
+    data['fax'] = this.fax;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
 
 class Services {
   int? id;
-  String? name;
+  String? description;
+  int? amount;
+  String? code;
+  int? type;
+  String? createdAt;
+  String? updatedAt;
 
-  Services({this.id, this.name});
+  Services(
+      {this.id,
+        this.description,
+        this.amount,
+        this.code,
+        this.type,
+        this.createdAt,
+        this.updatedAt});
 
   Services.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    name = json['name'];
+    description = json['description'];
+    amount = json['amount'];
+    code = json['code'];
+    type = json['type'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['name'] = this.name;
+    data['description'] = this.description;
+    data['amount'] = this.amount;
+    data['code'] = this.code;
+    data['type'] = this.type;
+    data['created_at'] = this.createdAt;
+    data['updated_at'] = this.updatedAt;
     return data;
   }
 }
+

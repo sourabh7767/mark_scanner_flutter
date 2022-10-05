@@ -7,6 +7,9 @@ class CustomTextField extends StatelessWidget {
   String? hint;
   bool? inputLine;
   bool? Capital;
+  Widget? suffixIcon;
+  Widget? prefixIcon;
+
   var textType;
 
   CustomTextField(
@@ -14,6 +17,8 @@ class CustomTextField extends StatelessWidget {
       required this.textEditingController,
       required this.hint,
       this.inputLine,
+        this.suffixIcon,
+        this.prefixIcon,
         this.textType,
       this.Capital})
       : super(key: key);
@@ -34,9 +39,15 @@ class CustomTextField extends StatelessWidget {
         textCapitalization: (Capital ?? false)
             ? TextCapitalization.characters
             : TextCapitalization.none,
+        autofocus: true,
+        // onSubmitted: (v)=>FocusScope.of(context).nextFocus(),
+onEditingComplete: (){FocusScope.of(context).nextFocus();},
         decoration: InputDecoration(
+
           focusColor: AppColors.appColors,
           fillColor: AppColors.appColors,
+          suffixIcon: suffixIcon,
+          prefixIcon: prefixIcon,
           focusedBorder: (inputLine ?? false)
               ? UnderlineInputBorder(
                   borderSide: BorderSide(color: AppColors.appColors, width: 1))
